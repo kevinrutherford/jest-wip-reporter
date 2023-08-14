@@ -1,12 +1,19 @@
-name: automerge on pull request
-on: [pull_request]
+name: Dependabot automerge
+on: pull_request
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   automerge:
     name: automerge dependabot
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
+    if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
+
+      - name: Git checkout
+        uses: actions/checkout@v3
 
       - name: Compile
         run: |
