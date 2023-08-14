@@ -2,10 +2,11 @@
   "name": "jest-wip-reporter",
   "version": "0.0.1",
   "description": "A Jest reporter that treats all incomplete tests as WIP",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "files": [
+    "dist"
+  ],
+  "main": "dist",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/kevinrutherford/jest-wip-reporter.git"
@@ -19,5 +20,20 @@
   "bugs": {
     "url": "https://github.com/kevinrutherford/jest-wip-reporter/issues"
   },
-  "homepage": "https://github.com/kevinrutherford/jest-wip-reporter#readme"
+  "homepage": "https://github.com/kevinrutherford/jest-wip-reporter#readme",
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@jest/reporters": "^26.6.2",
+    "chalk": "^4.1.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.20",
+    "@types/node": "^14.14.32",
+    "jest": "^26.6.3",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.2.3"
+  }
 }
