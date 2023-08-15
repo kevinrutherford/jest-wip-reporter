@@ -67,16 +67,16 @@ export default class JestReporter implements Reporter {
     test?: Set<TestContext>,
     runResults?: AggregatedResult
   ): Promise<void> | void {
-    if (runResults) {
-      console.log(`
-Passed: ${runResults.numPassedTests}, pending: ${runResults.numPendingTests}, todo: ${runResults.numTodoTests}, failed: ${runResults.numFailedTests}
-`)
-      runResults.testResults.forEach(function (tr: TestResult) {
-        process.stdout.write(tr.failureMessage ?? '')
-      })
-    } else {
-      console.log('No runResults!')
+    process.stdout.write('\n\n')
+    if (!runResults) {
+      process.stdout.write(`${chalk.redBright('No run results!')}\n`)
+      return
     }
+    runResults.testResults.forEach(function (tr: TestResult) {
+      process.stdout.write(tr.failureMessage ?? '')
+    })
+    process.stdout.write(`Passed: ${runResults.numPassedTests}, pending: ${runResults.numPendingTests}, todo: ${runResults.numTodoTests}, failed: ${runResults.numFailedTests}
+`)
   }
 
   getLastError(): Error | undefined {
