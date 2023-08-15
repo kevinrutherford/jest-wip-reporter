@@ -2,7 +2,7 @@ import chalk = require('chalk')
 import type {
   AggregatedResult,
   Config,
-  Context,
+  TestContext,
   Reporter,
   ReporterOnStartOptions,
   Test,
@@ -64,7 +64,7 @@ export default class JestReporter implements Reporter {
   }
 
   onRunComplete(
-    test?: Set<Context>,
+    test?: Set<TestContext>,
     runResults?: AggregatedResult
   ): Promise<void> | void {
     process.stdout.write('\n\n')
