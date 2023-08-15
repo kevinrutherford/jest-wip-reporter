@@ -4,11 +4,11 @@
     "target": "esnext",
     "module": "commonjs",
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "declaration": false,
     "isolatedModules": true,
     "noImplicitReturns": true,
     "strict": true,
-    "esModuleInterop": false,
     "forceConsistentCasingInFileNames": true,
     "outDir": "dist/"
   },
