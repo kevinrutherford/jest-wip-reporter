@@ -82,7 +82,7 @@ export default class JestReporter implements Reporter {
     if (runResults.numPassedTests > 0)
       report.push(chalk.greenBright(`${runResults.numPassedTests} passed`))
     if (wipCount > 0)
-      report.push(chalk.yellowBright(`${wipCount} failed`))
+      report.push(chalk.yellowBright(`${wipCount} wip`))
     if (runResults.numFailedTests > 0)
       report.push(chalk.redBright(`${runResults.numFailedTests} failed`))
     process.stdout.write(report.join(', '))
