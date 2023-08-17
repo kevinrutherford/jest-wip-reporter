@@ -13,6 +13,9 @@ export default class JestReporter implements Reporter {
   private _error?: Error
   protected _globalConfig: Config.GlobalConfig
   protected _options?: any
+  wipCount: number = 0
+  passedCount: number = 0
+  failedCount: number = 0
 
   constructor(globalConfig: Config.GlobalConfig, options?: any) {
     this._globalConfig = globalConfig
@@ -44,17 +47,23 @@ export default class JestReporter implements Reporter {
     for (var i = 0; i < testResult.testResults.length; i++) {
       switch (testResult.testResults[i].status) {
         case "passed":
-          process.stdout.write(chalk.greenBright('.'))
+          if (testResult.testResults[i].numPassingAsserts === 0) {
+            this.wipCount = this.wipCount + 1
+            process.stdout.write(chalk.yellowBright('?'))
+          } else {
+            this.passedCount = this.passedCount + 1
+            process.stdout.write(chalk.greenBright('.'))
+          }
           break
         case "todo":
         case "pending":
-          process.stdout.write(chalk.yellowBright('?'))
-          break
         case "skipped":
         case "disabled":
-          process.stdout.write("x")
+          this.wipCount = this.wipCount + 1
+          process.stdout.write(chalk.yellowBright('?'))
           break
         case "failed":
+          this.failedCount = this.failedCount + 1
           process.stdout.write(chalk.redBright('F'))
           break
         default:
@@ -76,15 +85,14 @@ export default class JestReporter implements Reporter {
       process.stdout.write(tr.failureMessage ?? '')
     })
     const runTime = (Date.now() - runResults.startTime) / 1000
-    const wipCount = runResults.numTodoTests + runResults.numPendingTests
     process.stdout.write('Tests: ')
     const report = []
-    if (runResults.numPassedTests > 0)
-      report.push(chalk.greenBright(`${runResults.numPassedTests} passed`))
-    if (wipCount > 0)
-      report.push(chalk.yellowBright(`${wipCount} wip`))
-    if (runResults.numFailedTests > 0)
-      report.push(chalk.redBright(`${runResults.numFailedTests} failed`))
+    if (this.passedCount > 0)
+      report.push(chalk.greenBright(`${this.passedCount} passed`))
+    if (this.wipCount > 0)
+      report.push(chalk.yellowBright(`${this.wipCount} wip`))
+    if (this.failedCount > 0)
+      report.push(chalk.redBright(`${this.failedCount} failed`))
     process.stdout.write(report.join(', '))
     process.stdout.write(`\nTime: ${runTime}s\n`)
   }
