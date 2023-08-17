@@ -22,18 +22,10 @@ export default class JestReporter implements Reporter {
     this._options = options
   }
 
-  log(message: string): void {
-    console.log(`log message: ${JSON.stringify(message, null, 2)}`)
+  onRunStart(): void {
   }
 
-  onRunStart(
-    aggregatedResults: AggregatedResult,
-    options: ReporterOnStartOptions
-  ): void {
-    console.log('')
-  }
-
-  onTestStart(test?: Test): void {
+  onTestStart(): void {
   }
 
   onTestResult(
