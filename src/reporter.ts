@@ -4,87 +4,81 @@ import type {
   Config,
   TestContext,
   Reporter,
-  ReporterOnStartOptions,
   Test,
   TestResult,
 } from '@jest/reporters'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
+
   protected _globalConfig: Config.GlobalConfig
-  protected _options?: any
+
   private wipCount: number = 0
+
   private passedCount: number = 0
+
   private failedCount: number = 0
 
-  constructor(globalConfig: Config.GlobalConfig, options?: any) {
+  constructor(globalConfig: Config.GlobalConfig) {
     this._globalConfig = globalConfig
-    this._options = options
   }
 
+  // eslint-disable-next-line class-methods-use-this
   onRunStart(): void {
     process.stdout.write('\n')
   }
 
+  // eslint-disable-next-line class-methods-use-this
   onTestStart(): void {
   }
 
-  onTestResult(
-    test: Test,
-    testResult: TestResult,
-    aggregatedResults: AggregatedResult
-  ): void {
-    for (var i = 0; i < testResult.testResults.length; i++) {
-      const run = testResult.testResults[i]
+  onTestResult(_test: Test, testResult: TestResult): void {
+    testResult.testResults.forEach((run) => {
       switch (run.status) {
-        case "passed":
+        case 'passed':
           if (run.numPassingAsserts === 0) {
-            this.wipCount = this.wipCount + 1
+            this.wipCount += 1
             process.stdout.write(chalk.yellowBright('?'))
-            if (process.env.JWR_VERBOSE) {
+            if (process.env.JWR_VERBOSE)
               process.stdout.write(` ${chalk.yellowBright(run.fullName)}\n`)
-            }
           } else {
-            this.passedCount = this.passedCount + 1
+            this.passedCount += 1
             process.stdout.write(chalk.greenBright('.'))
-            if (process.env.JWR_VERBOSE) {
+            if (process.env.JWR_VERBOSE)
               process.stdout.write(` ${chalk.greenBright(run.fullName)}\n`)
-            }
           }
           break
-        case "todo":
-        case "pending":
-        case "skipped":
-        case "disabled":
-          this.wipCount = this.wipCount + 1
+        case 'todo':
+        case 'pending':
+        case 'skipped':
+        case 'disabled':
+          this.wipCount += 1
           process.stdout.write(chalk.yellowBright('?'))
-          if (process.env.JWR_VERBOSE) {
+          if (process.env.JWR_VERBOSE)
             process.stdout.write(` ${chalk.yellowBright(run.fullName)}\n`)
-          }
           break
-        case "failed":
-          this.failedCount = this.failedCount + 1
+        case 'failed':
+          this.failedCount += 1
           process.stdout.write(chalk.redBright('x'))
-          if (process.env.JWR_VERBOSE) {
+          if (process.env.JWR_VERBOSE)
             process.stdout.write(` ${chalk.redBright(run.fullName)}\n`)
-          }
           break
         default:
           process.stdout.write(chalk.redBright('!'))
       }
-    }
+    })
   }
 
   onRunComplete(
     test?: Set<TestContext>,
-    runResults?: AggregatedResult
+    runResults?: AggregatedResult,
   ): Promise<void> | void {
     if (!runResults) {
       process.stdout.write(`${chalk.redBright('\n\nNo run results!')}\n`)
       return
     }
     process.stdout.write('\n')
-    runResults.testResults.forEach(function (tr: TestResult) {
+    runResults.testResults.forEach((tr: TestResult) => {
       process.stdout.write(tr.failureMessage ?? '')
     })
     const runTime = (Date.now() - runResults.startTime) / 1000

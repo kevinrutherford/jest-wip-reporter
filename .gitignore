@@ -1,7 +1,9 @@
 dist
 .env
 .env.test
+.eslint-cache
 *.log
+.mk-*
 node_modules/
 *.tgz
 
