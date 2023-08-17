@@ -13,9 +13,9 @@ export default class JestReporter implements Reporter {
   private _error?: Error
   protected _globalConfig: Config.GlobalConfig
   protected _options?: any
-  wipCount: number = 0
-  passedCount: number = 0
-  failedCount: number = 0
+  private wipCount: number = 0
+  private passedCount: number = 0
+  private failedCount: number = 0
 
   constructor(globalConfig: Config.GlobalConfig, options?: any) {
     this._globalConfig = globalConfig
@@ -41,9 +41,6 @@ export default class JestReporter implements Reporter {
     testResult: TestResult,
     aggregatedResults: AggregatedResult
   ): void {
-    if (testResult.skipped) {
-      console.log(testResult.testFilePath, ' skipped');
-    }
     for (var i = 0; i < testResult.testResults.length; i++) {
       switch (testResult.testResults[i].status) {
         case "passed":
