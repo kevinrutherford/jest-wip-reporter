@@ -50,9 +50,15 @@ export default class JestReporter implements Reporter {
           if (testResult.testResults[i].numPassingAsserts === 0) {
             this.wipCount = this.wipCount + 1
             process.stdout.write(chalk.yellowBright('?'))
+            if (process.env.JWR_VERBOSE) {
+              process.stdout.write(` ${chalk.yellowBright(testResult.testResults[i].fullName)}\n`)
+            }
           } else {
             this.passedCount = this.passedCount + 1
             process.stdout.write(chalk.greenBright('.'))
+            if (process.env.JWR_VERBOSE) {
+              process.stdout.write(` ${chalk.greenBright(testResult.testResults[i].fullName)}\n`)
+            }
           }
           break
         case "todo":
@@ -61,10 +67,16 @@ export default class JestReporter implements Reporter {
         case "disabled":
           this.wipCount = this.wipCount + 1
           process.stdout.write(chalk.yellowBright('?'))
+          if (process.env.JWR_VERBOSE) {
+            process.stdout.write(` ${chalk.yellowBright(testResult.testResults[i].fullName)}\n`)
+          }
           break
         case "failed":
           this.failedCount = this.failedCount + 1
           process.stdout.write(chalk.redBright('F'))
+          if (process.env.JWR_VERBOSE) {
+            process.stdout.write(` ${chalk.redBright(testResult.testResults[i].fullName)}\n`)
+          }
           break
         default:
           process.stdout.write(`(${testResult.testResults[i].status})`)
