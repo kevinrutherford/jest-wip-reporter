@@ -23,6 +23,7 @@ export default class JestReporter implements Reporter {
   }
 
   onRunStart(): void {
+    process.stdout.write('\n')
   }
 
   onTestStart(): void {
@@ -34,19 +35,20 @@ export default class JestReporter implements Reporter {
     aggregatedResults: AggregatedResult
   ): void {
     for (var i = 0; i < testResult.testResults.length; i++) {
-      switch (testResult.testResults[i].status) {
+      const run = testResult.testResults[i]
+      switch (run.status) {
         case "passed":
-          if (testResult.testResults[i].numPassingAsserts === 0) {
+          if (run.numPassingAsserts === 0) {
             this.wipCount = this.wipCount + 1
             process.stdout.write(chalk.yellowBright('?'))
             if (process.env.JWR_VERBOSE) {
-              process.stdout.write(` ${chalk.yellowBright(testResult.testResults[i].fullName)}\n`)
+              process.stdout.write(` ${chalk.yellowBright(run.fullName)}\n`)
             }
           } else {
             this.passedCount = this.passedCount + 1
             process.stdout.write(chalk.greenBright('.'))
             if (process.env.JWR_VERBOSE) {
-              process.stdout.write(` ${chalk.greenBright(testResult.testResults[i].fullName)}\n`)
+              process.stdout.write(` ${chalk.greenBright(run.fullName)}\n`)
             }
           }
           break
@@ -57,14 +59,14 @@ export default class JestReporter implements Reporter {
           this.wipCount = this.wipCount + 1
           process.stdout.write(chalk.yellowBright('?'))
           if (process.env.JWR_VERBOSE) {
-            process.stdout.write(` ${chalk.yellowBright(testResult.testResults[i].fullName)}\n`)
+            process.stdout.write(` ${chalk.yellowBright(run.fullName)}\n`)
           }
           break
         case "failed":
           this.failedCount = this.failedCount + 1
           process.stdout.write(chalk.redBright('x'))
           if (process.env.JWR_VERBOSE) {
-            process.stdout.write(` ${chalk.redBright(testResult.testResults[i].fullName)}\n`)
+            process.stdout.write(` ${chalk.redBright(run.fullName)}\n`)
           }
           break
         default:
