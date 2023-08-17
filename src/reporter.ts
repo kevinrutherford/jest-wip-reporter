@@ -73,13 +73,13 @@ export default class JestReporter implements Reporter {
           break
         case "failed":
           this.failedCount = this.failedCount + 1
-          process.stdout.write(chalk.redBright('F'))
+          process.stdout.write(chalk.redBright('x'))
           if (process.env.JWR_VERBOSE) {
             process.stdout.write(` ${chalk.redBright(testResult.testResults[i].fullName)}\n`)
           }
           break
         default:
-          process.stdout.write(`(${testResult.testResults[i].status})`)
+          process.stdout.write(chalk.redBright('!'))
       }
     }
   }
