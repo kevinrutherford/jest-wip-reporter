@@ -67,16 +67,26 @@ export default class JestReporter implements Reporter {
     test?: Set<TestContext>,
     runResults?: AggregatedResult
   ): Promise<void> | void {
-    process.stdout.write('\n\n')
     if (!runResults) {
-      process.stdout.write(`${chalk.redBright('No run results!')}\n`)
+      process.stdout.write(`${chalk.redBright('\n\nNo run results!')}\n`)
       return
     }
+    process.stdout.write('\n')
     runResults.testResults.forEach(function (tr: TestResult) {
       process.stdout.write(tr.failureMessage ?? '')
     })
-    process.stdout.write(`Passed: ${runResults.numPassedTests}, pending: ${runResults.numPendingTests}, todo: ${runResults.numTodoTests}, failed: ${runResults.numFailedTests}
-`)
+    const runTime = (Date.now() - runResults.startTime) / 1000
+    const wipCount = runResults.numTodoTests + runResults.numPendingTests
+    process.stdout.write('Tests: ')
+    const report = []
+    if (runResults.numPassedTests > 0)
+      report.push(chalk.greenBright(`${runResults.numPassedTests} passed`))
+    if (wipCount > 0)
+      report.push(chalk.yellowBright(`${wipCount} failed`))
+    if (runResults.numFailedTests > 0)
+      report.push(chalk.redBright(`${runResults.numFailedTests} failed`))
+    process.stdout.write(report.join(', '))
+    process.stdout.write(`\nTime: ${runTime}s\n`)
   }
 
   getLastError(): Error | undefined {
