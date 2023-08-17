@@ -15,7 +15,7 @@ jobs:
 
       - name: Compile
         run: |
-          make clobber compile
+          make clobber all
 
       - name: Dependabot metadata
         id: metadata
