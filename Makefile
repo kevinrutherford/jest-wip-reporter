@@ -8,7 +8,7 @@ LINT_CACHE := .eslint-cache
 check: $(MK_COMPILED) $(MK_LINTED)
 
 $(MK_COMPILED): node_modules $(TS_SOURCES)
-	npx tsc -p tsconfig.json
+	npx tsc -p tsconfig.json --noEmit
 	@touch $@
 
 node_modules: package.json package-lock.json
@@ -28,7 +28,6 @@ prod: check
 clean:
 	rm -rf $(MK_LINTED) $(MK_COMPILED)
 	rm -f $(LINT_CACHE)
-	rm -rf build
 
 clobber: clean
 	rm -rf dist
