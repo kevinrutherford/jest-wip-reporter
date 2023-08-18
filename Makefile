@@ -1,3 +1,4 @@
+DEPCRUISE_CONFIG := .dependency-cruiser.cjs
 MK_COMPILED := .mk-compiled
 MK_LINTED := .mk-linted
 MK_PROD := .mk-prod
@@ -5,7 +6,11 @@ MK_TESTED := .mk-tested
 TS_SOURCES := $(shell find src test -name '*.ts')
 LINT_CACHE := .eslint-cache
 
+depcruise := npx depcruise --config $(DEPCRUISE_CONFIG)
+
 .PHONY: check clean clobber prod
+
+# Software development - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 check: $(MK_COMPILED) $(MK_TESTED) $(MK_LINTED)
 
@@ -21,18 +26,22 @@ $(MK_LINTED): node_modules $(TS_SOURCES)
 		--ext .js,.ts \
 		--cache --cache-location $(LINT_CACHE) \
 		--color --max-warnings 0
-	npx madge --circular --extensions ts src
+	$(depcruise) src
 	@touch $@
 
 $(MK_TESTED): node_modules $(MK_PROD)
 	npx jest --reporters `pwd`
 	@touch $@
 
+# Production build - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 prod: $(MK_PROD)
 
 $(MK_PROD): $(MK_COMPILED) $(MK_LINTED)
 	npx tsc -p tsconfig-prod.json
 	@touch $@
+
+# Utilities - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 clean:
 	rm -rf $(MK_LINTED) $(MK_COMPILED)
