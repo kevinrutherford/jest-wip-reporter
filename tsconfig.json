@@ -10,9 +10,11 @@
     "noImplicitReturns": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "dist/"
+    "outDir": "build/"
   },
-  "include": ["src/**/*"],
-  "exclude": ["**/__tests__/**"],
+  "include": [
+    "src/**/*",
+    "test/**/*"
+  ],
   "compileOnSave": true
 }

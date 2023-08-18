@@ -6,11 +6,11 @@ describe('verbose reporting', () => {
     }
 
     it('reports the test name', () => {
-      expect(topLevel.title).toStrictEqual('my test')
+      expect(topLevel.title).toBe('my test')
     })
 
     it('reports that the suite is passing', () => {
-      expect(topLevel.status).toStrictEqual('pass')
+      expect(topLevel.status).toBe('pass')
     })
   })
 })
