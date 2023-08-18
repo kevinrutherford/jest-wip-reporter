@@ -1,11 +1,13 @@
 MK_COMPILED := .mk-compiled
-MK_LINTED := .mk-linted-ts
+MK_LINTED := .mk-linted
+MK_PROD := .mk-prod
+MK_TESTED := .mk-tested
 TS_SOURCES := $(shell find src test -name '*.ts')
 LINT_CACHE := .eslint-cache
 
 .PHONY: check clean clobber prod
 
-check: $(MK_COMPILED) $(MK_LINTED)
+check: $(MK_COMPILED) $(MK_TESTED) $(MK_LINTED)
 
 $(MK_COMPILED): node_modules $(TS_SOURCES)
 	npx tsc -p tsconfig.json --noEmit
@@ -22,8 +24,15 @@ $(MK_LINTED): node_modules $(TS_SOURCES)
 	npx madge --circular --extensions ts src
 	@touch $@
 
-prod: check
+$(MK_TESTED): node_modules $(MK_PROD)
+	npx jest --reporters `pwd`
+	@touch $@
+
+prod: $(MK_PROD)
+
+$(MK_PROD): $(MK_COMPILED) $(MK_LINTED)
 	npx tsc -p tsconfig-prod.json
+	@touch $@
 
 clean:
 	rm -rf $(MK_LINTED) $(MK_COMPILED)
