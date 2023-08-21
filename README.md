@@ -36,7 +36,7 @@ For example, create a `jest.config.js` file containing:
 module.exports = {
   "verbose": false,
   "reporters": [
-    "jest-simple-dot-reporter",
+    "jest-wip-reporter",
   ]
 };
 ```
