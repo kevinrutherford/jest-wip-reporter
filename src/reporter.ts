@@ -13,7 +13,7 @@ export default class JestReporter implements Reporter {
 
   protected _globalConfig: Config.GlobalConfig
 
-  private wipCount: number = 0
+  private wipTitles: Array<string> = []
 
   private passedCount: number = 0
 
@@ -37,7 +37,7 @@ export default class JestReporter implements Reporter {
       switch (run.status) {
         case 'passed':
           if (run.numPassingAsserts === 0) {
-            this.wipCount += 1
+            this.wipTitles.push(run.fullName)
             process.stdout.write(chalk.yellowBright('?'))
             if (process.env.JWR_VERBOSE)
               process.stdout.write(` ${chalk.yellowBright(run.fullName)}\n`)
@@ -52,7 +52,7 @@ export default class JestReporter implements Reporter {
         case 'pending':
         case 'skipped':
         case 'disabled':
-          this.wipCount += 1
+          this.wipTitles.push(run.fullName)
           process.stdout.write(chalk.yellowBright('?'))
           if (process.env.JWR_VERBOSE)
             process.stdout.write(` ${chalk.yellowBright(run.fullName)}\n`)
@@ -77,6 +77,12 @@ export default class JestReporter implements Reporter {
       process.stdout.write(`${chalk.redBright('\n\nNo run results!')}\n`)
       return
     }
+    if (this.wipTitles.length > 0) {
+      process.stdout.write(chalk.yellowBright('\n\nWork in progress:\n'))
+      this.wipTitles.forEach((title: string) => {
+        process.stdout.write(chalk.yellowBright(`? ${title}\n`))
+      })
+    }
     process.stdout.write('\n')
     runResults.testResults.forEach((tr: TestResult) => {
       process.stdout.write(tr.failureMessage ?? '')
@@ -86,8 +92,8 @@ export default class JestReporter implements Reporter {
     const report = []
     if (this.passedCount > 0)
       report.push(chalk.greenBright(`${this.passedCount} passed`))
-    if (this.wipCount > 0)
-      report.push(chalk.yellowBright(`${this.wipCount} wip`))
+    if (this.wipTitles.length > 0)
+      report.push(chalk.yellowBright(`${this.wipTitles.length} wip`))
     if (this.failedCount > 0)
       report.push(chalk.redBright(`${this.failedCount} failed`))
     process.stdout.write(report.join(', '))
