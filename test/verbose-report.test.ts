@@ -1,5 +1,16 @@
+import { arbitraryString } from './helpers'
+
 describe('verbose reporting', () => {
   describe('given a single test with no ancestors', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const testResult = {
+      testResults: [
+        {
+          ancestorTitles: [],
+          fullName: arbitraryString(),
+        },
+      ],
+    }
     const topLevel = {
       title: 'my test',
       status: 'pass',
