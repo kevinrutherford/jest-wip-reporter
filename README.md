@@ -24,6 +24,8 @@ By default this reporter emits a single character for each executed test:
 
 A WIP (work-in-progress) test is deemed to be any test that is marked as `todo`, `failing` or `skip`.
 
+![image](https://github.com/kevinrutherford/jest-wip-reporter/assets/23290/b4a68372-19cc-481e-89e9-2e50203ac4e3)
+
 ## Configuration
 
 Configure [Jest](https://facebook.github.io/jest/docs/en/configuration.html) to use the reporter.
