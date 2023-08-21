@@ -28,7 +28,7 @@ A WIP (work-in-progress) test is deemed to be any test that is marked as `todo`,
 
 ## Configuration
 
-Configure [Jest](https://facebook.github.io/jest/docs/en/configuration.html) to use the reporter.
+[Configure Jest](https://facebook.github.io/jest/docs/en/configuration.html) to use the reporter.
 
 For example, create a `jest.config.js` file containing:
 
