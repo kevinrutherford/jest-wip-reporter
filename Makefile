@@ -7,6 +7,8 @@ TS_SOURCES := $(shell find src test -name '*.ts')
 LINT_CACHE := .eslint-cache
 
 depcruise := npx depcruise --config $(DEPCRUISE_CONFIG)
+jest := npx jest --reporters `pwd`
+tsc := npx tsc -p tsconfig.json --noEmit
 
 .PHONY: check clean clobber prod
 
@@ -15,7 +17,7 @@ depcruise := npx depcruise --config $(DEPCRUISE_CONFIG)
 check: $(MK_COMPILED) $(MK_TESTED) $(MK_LINTED)
 
 $(MK_COMPILED): node_modules $(TS_SOURCES)
-	npx tsc -p tsconfig.json --noEmit
+	$(tsc)
 	@touch $@
 
 node_modules: package.json package-lock.json
@@ -30,8 +32,14 @@ $(MK_LINTED): node_modules $(TS_SOURCES)
 	@touch $@
 
 $(MK_TESTED): node_modules $(MK_PROD)
-	npx jest --reporters `pwd`
+	$(jest)
 	@touch $@
+
+tsc-watch:
+	$(tsc) --watch
+
+jest-watch:
+	$(jest) --watch
 
 # Production build - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
