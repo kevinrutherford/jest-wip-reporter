@@ -1,27 +1,23 @@
+import { parseTestSuite } from '../src/parse-test-suite'
 import { arbitraryString } from './helpers'
 
-describe('verbose reporting', () => {
+describe('parseTestSuite', () => {
   describe('given a single test with no ancestors', () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const testResult = {
-      testResults: [
-        {
-          ancestorTitles: [],
-          fullName: arbitraryString(),
-        },
-      ],
-    }
-    const topLevel = {
-      title: 'my test',
-      status: 'pass',
-    }
+    const title = arbitraryString()
+    const testResults = [
+      {
+        ancestorTitles: [],
+        fullName: title,
+      },
+    ]
+    const parsed = parseTestSuite(testResults)
 
     it('reports the test name', () => {
-      expect(topLevel.title).toBe('my test')
+      expect(parsed.title).toBe(title)
     })
 
     it('reports that the suite is passing', () => {
-      expect(topLevel.status).toBe('pass')
+      expect(parsed.status).toBe('pass')
     })
   })
 })

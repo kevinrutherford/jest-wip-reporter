@@ -7,6 +7,7 @@ import type {
   Test,
   TestResult,
 } from '@jest/reporters'
+import { parseTestSuite } from './parse-test-suite'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
@@ -33,6 +34,8 @@ export default class JestReporter implements Reporter {
   }
 
   onTestResult(_test: Test, testResult: TestResult): void {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const suite = parseTestSuite(testResult.testResults)
     testResult.testResults.forEach((run) => {
       switch (run.status) {
         case 'passed':
