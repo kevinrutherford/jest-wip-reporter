@@ -19,11 +19,11 @@ describe('parseTestSuite', () => {
     const parsed = parseTestSuite(testResults)
 
     it('reports the test name', () => {
-      expect(parsed.title).toBe(title)
+      expect(parsed.outcome.title).toBe(title)
     })
 
     it('reports that the suite is in the WIP state', () => {
-      expect(parsed.status).toBe('wip')
+      expect(parsed.outcome.status).toBe('wip')
     })
   })
 
@@ -39,11 +39,11 @@ describe('parseTestSuite', () => {
     const parsed = parseTestSuite(testResults)
 
     it('reports the test name', () => {
-      expect(parsed.title).toBe(title)
+      expect(parsed.outcome.title).toBe(title)
     })
 
     it('reports that the suite is in the pass state', () => {
-      expect(parsed.status).toBe('pass')
+      expect(parsed.outcome.status).toBe('pass')
     })
   })
 
@@ -59,11 +59,11 @@ describe('parseTestSuite', () => {
     const parsed = parseTestSuite(testResults)
 
     it('reports the test name', () => {
-      expect(parsed.title).toBe(title)
+      expect(parsed.outcome.title).toBe(title)
     })
 
     it('reports that the suite is in the pass state', () => {
-      expect(parsed.status).toBe('fail')
+      expect(parsed.outcome.status).toBe('fail')
     })
   })
 })

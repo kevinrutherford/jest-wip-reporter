@@ -1,8 +1,15 @@
 type TestStatus = 'pass' | 'wip' | 'fail'
 
-type ParsedSuite = {
+type TestOutcome = {
   title: string,
   status: TestStatus,
+}
+
+type ParsedSuite = {
+  outcome: TestOutcome,
+  passedCount: number,
+  failedCount: number,
+  wipTitles: Array<string>,
 }
 
 export type TestRun = {
@@ -26,6 +33,11 @@ const identifyState = (input: string): TestStatus => {
 }
 
 export const parseTestSuite = (suite: Array<TestRun>): ParsedSuite => ({
-  title: suite[0].fullName,
-  status: identifyState(suite[0].status),
+  outcome: {
+    title: suite[0].fullName,
+    status: identifyState(suite[0].status),
+  },
+  passedCount: 0,
+  failedCount: 0,
+  wipTitles: [],
 })
