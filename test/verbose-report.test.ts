@@ -9,14 +9,14 @@ describe('parseTestSuite', () => {
     ['disabled'],
   ])('given a single %s test with no ancestors', (status) => {
     const title = arbitraryString()
-    const testResults: Array<TestRun> = [
+    const jestSuiteReport: Array<TestRun> = [
       {
         ancestorTitles: [],
         fullName: title,
         status,
       },
     ]
-    const parsed = parseTestSuite(testResults)
+    const parsed = parseTestSuite(jestSuiteReport)
 
     it('reports the test name', () => {
       expect(parsed.outcomes[0].title).toBe(title)
@@ -41,14 +41,14 @@ describe('parseTestSuite', () => {
 
   describe('given a single passing test with no ancestors', () => {
     const title = arbitraryString()
-    const testResults: Array<TestRun> = [
+    const jestSuiteReport: Array<TestRun> = [
       {
         ancestorTitles: [],
         fullName: title,
         status: 'passed',
       },
     ]
-    const parsed = parseTestSuite(testResults)
+    const parsed = parseTestSuite(jestSuiteReport)
 
     it('reports the test name', () => {
       expect(parsed.outcomes[0].title).toBe(title)
@@ -73,14 +73,14 @@ describe('parseTestSuite', () => {
 
   describe('given a single failing test with no ancestors', () => {
     const title = arbitraryString()
-    const testResults: Array<TestRun> = [
+    const jestSuiteReport: Array<TestRun> = [
       {
         ancestorTitles: [],
         fullName: title,
         status: 'failed',
       },
     ]
-    const parsed = parseTestSuite(testResults)
+    const parsed = parseTestSuite(jestSuiteReport)
 
     it('reports the test name', () => {
       expect(parsed.outcomes[0].title).toBe(title)
