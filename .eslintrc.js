@@ -28,6 +28,7 @@ module.exports = {
     '@typescript-eslint/brace-style': 'error',
     '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
     '@typescript-eslint/explicit-module-boundary-types': 'error',
+    '@typescript-eslint/lines-between-class-members': 'off',
     '@typescript-eslint/member-delimiter-style': ['error', {
       multiline: {
         delimiter: 'comma',
@@ -58,7 +59,7 @@ module.exports = {
     'import/no-cycle': 'off',
     'import/no-relative-packages': 'off',
     'import/prefer-default-export': 'off',
-    'lines-between-class-members': ['warn', 'always', { exceptAfterSingleLine: true }],
+    'lines-between-class-members': 'off',
     'max-len': ['error', 120, 2, {
       ignoreComments: false,
       ignoreRegExpLiterals: true,

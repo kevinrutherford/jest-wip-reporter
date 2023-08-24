@@ -11,13 +11,9 @@ import { parseTestSuite } from './parse-test-suite'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
-
   protected _globalConfig: Config.GlobalConfig
-
   private wipTitles: Array<string> = []
-
   private passedCount: number = 0
-
   private failedCount: number = 0
 
   constructor(globalConfig: Config.GlobalConfig) {
