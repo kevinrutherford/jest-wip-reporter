@@ -7,7 +7,7 @@ describe('parseTestSuite', () => {
     ['pending'],
     ['skipped'],
     ['disabled'],
-  ])('given a single WIP test with no ancestors', (status) => {
+  ])('given a single %s test with no ancestors', (status) => {
     const title = arbitraryString()
     const testResults: Array<TestRun> = [
       {
@@ -25,6 +25,12 @@ describe('parseTestSuite', () => {
     it('reports that the suite is in the WIP state', () => {
       expect(parsed.outcome.status).toBe('wip')
     })
+
+    it.todo('reports that 0 tests passed')
+
+    it.todo('reports the name of the WIP test')
+
+    it.todo('reports that 0 tests failed')
   })
 
   describe('given a single passing test with no ancestors', () => {
@@ -45,6 +51,12 @@ describe('parseTestSuite', () => {
     it('reports that the suite is in the pass state', () => {
       expect(parsed.outcome.status).toBe('pass')
     })
+
+    it.todo('reports that 1 test passed')
+
+    it.todo('reports that there are no WIP tests')
+
+    it.todo('reports that 0 tests failed')
   })
 
   describe('given a single failing test with no ancestors', () => {
@@ -65,5 +77,11 @@ describe('parseTestSuite', () => {
     it('reports that the suite is in the pass state', () => {
       expect(parsed.outcome.status).toBe('fail')
     })
+
+    it.todo('reports that 0 tests passed')
+
+    it.todo('reports that there are no WIP tests')
+
+    it.todo('reports that 1 test failed')
   })
 })
