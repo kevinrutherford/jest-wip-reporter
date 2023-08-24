@@ -3,13 +3,11 @@ import { arbitraryString } from './helpers'
 
 describe('parseTestSuite', () => {
   describe.each([
-    ['passed', 'pass'],
-    ['todo', 'wip'],
-    ['pending', 'wip'],
-    ['skipped', 'wip'],
-    ['disabled', 'wip'],
-    ['failed', 'fail'],
-  ])('given a single test with no ancestors and state %s', (status, expected) => {
+    ['todo'],
+    ['pending'],
+    ['skipped'],
+    ['disabled'],
+  ])('given a single WIP test with no ancestors', (status) => {
     const title = arbitraryString()
     const testResults: Array<TestRun> = [
       {
@@ -24,8 +22,48 @@ describe('parseTestSuite', () => {
       expect(parsed.title).toBe(title)
     })
 
-    it(`reports that the suite is in the ${expected} state`, () => {
-      expect(parsed.status).toBe(expected)
+    it('reports that the suite is in the WIP state', () => {
+      expect(parsed.status).toBe('wip')
+    })
+  })
+
+  describe('given a single passing test with no ancestors', () => {
+    const title = arbitraryString()
+    const testResults: Array<TestRun> = [
+      {
+        ancestorTitles: [],
+        fullName: title,
+        status: 'passed',
+      },
+    ]
+    const parsed = parseTestSuite(testResults)
+
+    it('reports the test name', () => {
+      expect(parsed.title).toBe(title)
+    })
+
+    it('reports that the suite is in the pass state', () => {
+      expect(parsed.status).toBe('pass')
+    })
+  })
+
+  describe('given a single failing test with no ancestors', () => {
+    const title = arbitraryString()
+    const testResults: Array<TestRun> = [
+      {
+        ancestorTitles: [],
+        fullName: title,
+        status: 'failed',
+      },
+    ]
+    const parsed = parseTestSuite(testResults)
+
+    it('reports the test name', () => {
+      expect(parsed.title).toBe(title)
+    })
+
+    it('reports that the suite is in the pass state', () => {
+      expect(parsed.status).toBe('fail')
     })
   })
 })
