@@ -26,11 +26,17 @@ describe('parseTestSuite', () => {
       expect(parsed.outcome.status).toBe('wip')
     })
 
-    it.todo('reports that 0 tests passed')
+    it('reports that 0 tests passed', () => {
+      expect(parsed.passedCount).toBe(0)
+    })
 
-    it.todo('reports the name of the WIP test')
+    it.failing('reports the name of the WIP test', () => {
+      expect(parsed.wipTitles).toStrictEqual([title])
+    })
 
-    it.todo('reports that 0 tests failed')
+    it('reports that 0 tests failed', () => {
+      expect(parsed.failedCount).toBe(0)
+    })
   })
 
   describe('given a single passing test with no ancestors', () => {
@@ -52,11 +58,17 @@ describe('parseTestSuite', () => {
       expect(parsed.outcome.status).toBe('pass')
     })
 
-    it.todo('reports that 1 test passed')
+    it.failing('reports that 1 test passed', () => {
+      expect(parsed.passedCount).toBe(1)
+    })
 
-    it.todo('reports that there are no WIP tests')
+    it('reports that there are no WIP tests', () => {
+      expect(parsed.wipTitles).toStrictEqual([])
+    })
 
-    it.todo('reports that 0 tests failed')
+    it('reports that 0 tests failed', () => {
+      expect(parsed.failedCount).toBe(0)
+    })
   })
 
   describe('given a single failing test with no ancestors', () => {
@@ -78,10 +90,16 @@ describe('parseTestSuite', () => {
       expect(parsed.outcome.status).toBe('fail')
     })
 
-    it.todo('reports that 0 tests passed')
+    it('reports that 0 tests passed', () => {
+      expect(parsed.passedCount).toBe(0)
+    })
 
-    it.todo('reports that there are no WIP tests')
+    it('reports that there are no WIP tests', () => {
+      expect(parsed.wipTitles).toStrictEqual([])
+    })
 
-    it.todo('reports that 1 test failed')
+    it.failing('reports that 1 test failed', () => {
+      expect(parsed.failedCount).toBe(1)
+    })
   })
 })
