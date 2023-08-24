@@ -102,4 +102,44 @@ describe('parseTestSuite', () => {
       expect(parsed.failedCount).toBe(1)
     })
   })
+
+  describe('given multiple tests with no ancestors', () => {
+    const title0 = arbitraryString()
+    const title1 = arbitraryString()
+    const jestSuiteReport: Array<TestRun> = [
+      {
+        ancestorTitles: [],
+        fullName: title0,
+        status: 'failed',
+      },
+      {
+        ancestorTitles: [],
+        fullName: title1,
+        status: 'pending',
+      },
+    ]
+    const parsed = parseTestSuite(jestSuiteReport)
+
+    it.failing('reports the test names', () => {
+      expect(parsed.outcomes[0].title).toBe(title0)
+      expect(parsed.outcomes[1].title).toBe(title1)
+    })
+
+    it.failing('reports that the tests are in the correct state', () => {
+      expect(parsed.outcomes[0].status).toBe('fail')
+      expect(parsed.outcomes[1].status).toBe('wip')
+    })
+
+    it('reports that 0 tests passed', () => {
+      expect(parsed.passedCount).toBe(0)
+    })
+
+    it.failing('reports that there are no WIP tests', () => {
+      expect(parsed.wipTitles).toStrictEqual([title1])
+    })
+
+    it('reports that 1 test failed', () => {
+      expect(parsed.failedCount).toBe(1)
+    })
+  })
 })
