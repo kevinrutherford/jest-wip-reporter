@@ -12,7 +12,7 @@ type SuiteSummary = {
 }
 
 type ParsedSuite = SuiteSummary & {
-  outcome: TestOutcome,
+  outcomes: Array<TestOutcome>,
 }
 
 export type TestRun = {
@@ -55,10 +55,12 @@ export const parseTestSuite = (suite: Array<TestRun>): ParsedSuite => {
       break
   }
   return ({
-    outcome: {
-      title: currentRun.fullName,
-      status,
-    },
+    outcomes: [
+      {
+        title: currentRun.fullName,
+        status,
+      },
+    ],
     ...summary,
   })
 }
