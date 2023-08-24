@@ -36,31 +36,29 @@ const identifyState = (input: string): TestStatus => {
 }
 
 export const parseTestSuite = (suite: Array<TestRun>): ParsedSuite => {
-  const summary: SuiteSummary = {
+  const result: ParsedSuite = {
     passedCount: 0,
     failedCount: 0,
     wipTitles: [],
+    outcomes: [],
   }
-  const currentRun = suite[0]
-  const status = identifyState(currentRun.status)
-  switch (status) {
-    case 'pass':
-      summary.passedCount += 1
-      break
-    case 'wip':
-      summary.wipTitles.push(currentRun.fullName)
-      break
-    case 'fail':
-      summary.failedCount += 1
-      break
-  }
-  return ({
-    outcomes: [
-      {
-        title: currentRun.fullName,
-        status,
-      },
-    ],
-    ...summary,
+  suite.forEach((currentRun) => {
+    const status = identifyState(currentRun.status)
+    switch (status) {
+      case 'pass':
+        result.passedCount += 1
+        break
+      case 'wip':
+        result.wipTitles.push(currentRun.fullName)
+        break
+      case 'fail':
+        result.failedCount += 1
+        break
+    }
+    result.outcomes.push({
+      title: currentRun.fullName,
+      status,
+    })
   })
+  return result
 }

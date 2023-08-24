@@ -120,12 +120,12 @@ describe('parseTestSuite', () => {
     ]
     const parsed = parseTestSuite(jestSuiteReport)
 
-    it.failing('reports the test names', () => {
+    it('reports the test names', () => {
       expect(parsed.outcomes[0].title).toBe(title0)
       expect(parsed.outcomes[1].title).toBe(title1)
     })
 
-    it.failing('reports that the tests are in the correct state', () => {
+    it('reports that the tests are in the correct state', () => {
       expect(parsed.outcomes[0].status).toBe('fail')
       expect(parsed.outcomes[1].status).toBe('wip')
     })
@@ -134,7 +134,7 @@ describe('parseTestSuite', () => {
       expect(parsed.passedCount).toBe(0)
     })
 
-    it.failing('reports that there are no WIP tests', () => {
+    it('reports that there are no WIP tests', () => {
       expect(parsed.wipTitles).toStrictEqual([title1])
     })
 
