@@ -5,11 +5,14 @@ type TestOutcome = {
   status: TestStatus,
 }
 
-type ParsedSuite = {
-  outcome: TestOutcome,
+type SuiteSummary = {
   passedCount: number,
   failedCount: number,
   wipTitles: Array<string>,
+}
+
+type ParsedSuite = SuiteSummary & {
+  outcome: TestOutcome,
 }
 
 export type TestRun = {
@@ -32,12 +35,30 @@ const identifyState = (input: string): TestStatus => {
   }
 }
 
-export const parseTestSuite = (suite: Array<TestRun>): ParsedSuite => ({
-  outcome: {
-    title: suite[0].fullName,
-    status: identifyState(suite[0].status),
-  },
-  passedCount: 0,
-  failedCount: 0,
-  wipTitles: [],
-})
+export const parseTestSuite = (suite: Array<TestRun>): ParsedSuite => {
+  const summary: SuiteSummary = {
+    passedCount: 0,
+    failedCount: 0,
+    wipTitles: [],
+  }
+  const currentRun = suite[0]
+  const status = identifyState(currentRun.status)
+  switch (status) {
+    case 'pass':
+      summary.passedCount += 1
+      break
+    case 'wip':
+      summary.wipTitles.push(currentRun.fullName)
+      break
+    case 'fail':
+      summary.failedCount += 1
+      break
+  }
+  return ({
+    outcome: {
+      title: currentRun.fullName,
+      status,
+    },
+    ...summary,
+  })
+}

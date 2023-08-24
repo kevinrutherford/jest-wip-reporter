@@ -30,7 +30,7 @@ describe('parseTestSuite', () => {
       expect(parsed.passedCount).toBe(0)
     })
 
-    it.failing('reports the name of the WIP test', () => {
+    it('reports the name of the WIP test', () => {
       expect(parsed.wipTitles).toStrictEqual([title])
     })
 
@@ -58,7 +58,7 @@ describe('parseTestSuite', () => {
       expect(parsed.outcome.status).toBe('pass')
     })
 
-    it.failing('reports that 1 test passed', () => {
+    it('reports that 1 test passed', () => {
       expect(parsed.passedCount).toBe(1)
     })
 
@@ -98,7 +98,7 @@ describe('parseTestSuite', () => {
       expect(parsed.wipTitles).toStrictEqual([])
     })
 
-    it.failing('reports that 1 test failed', () => {
+    it('reports that 1 test failed', () => {
       expect(parsed.failedCount).toBe(1)
     })
   })
