@@ -23,7 +23,7 @@ describe('parseTestSuite', () => {
     })
 
     it('reports that the suite is in the WIP state', () => {
-      expect(parsed.outcomes[0].status).toBe('wip')
+      expect(parsed.outcomes[0].outcome).toBe('wip')
     })
 
     it('reports that 0 tests passed', () => {
@@ -55,7 +55,7 @@ describe('parseTestSuite', () => {
     })
 
     it('reports that the suite is in the pass state', () => {
-      expect(parsed.outcomes[0].status).toBe('pass')
+      expect(parsed.outcomes[0].outcome).toBe('pass')
     })
 
     it('reports that 1 test passed', () => {
@@ -87,7 +87,7 @@ describe('parseTestSuite', () => {
     })
 
     it('reports that the suite is in the pass state', () => {
-      expect(parsed.outcomes[0].status).toBe('fail')
+      expect(parsed.outcomes[0].outcome).toBe('fail')
     })
 
     it('reports that 0 tests passed', () => {
@@ -126,8 +126,8 @@ describe('parseTestSuite', () => {
     })
 
     it('reports that the tests are in the correct state', () => {
-      expect(parsed.outcomes[0].status).toBe('fail')
-      expect(parsed.outcomes[1].status).toBe('wip')
+      expect(parsed.outcomes[0].outcome).toBe('fail')
+      expect(parsed.outcomes[1].outcome).toBe('wip')
     })
 
     it('reports that 0 tests passed', () => {

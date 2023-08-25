@@ -1,19 +1,4 @@
-type TestStatus = 'pass' | 'wip' | 'fail'
-
-type TestOutcome = {
-  title: string,
-  status: TestStatus,
-}
-
-type SuiteSummary = {
-  passedCount: number,
-  failedCount: number,
-  wipTitles: Array<string>,
-}
-
-type ParsedSuite = SuiteSummary & {
-  outcomes: Array<TestOutcome>,
-}
+import { SuiteReport, TestOutcome } from './suite-report'
 
 export type TestRun = {
   ancestorTitles: Array<string>,
@@ -21,8 +6,8 @@ export type TestRun = {
   status: string,
 }
 
-const identifyState = (input: string): TestStatus => {
-  switch (input) {
+const classify = (run: TestRun): TestOutcome => {
+  switch (run.status) {
     case 'passed':
       return 'pass'
     case 'todo':
@@ -35,16 +20,16 @@ const identifyState = (input: string): TestStatus => {
   }
 }
 
-export const parseTestSuite = (suite: Array<TestRun>): ParsedSuite => {
-  const result: ParsedSuite = {
+export const parseTestSuite = (suite: Array<TestRun>): SuiteReport => {
+  const result: SuiteReport = {
     passedCount: 0,
     failedCount: 0,
     wipTitles: [],
     outcomes: [],
   }
   suite.forEach((currentRun) => {
-    const status = identifyState(currentRun.status)
-    switch (status) {
+    const outcome = classify(currentRun)
+    switch (outcome) {
       case 'pass':
         result.passedCount += 1
         break
@@ -57,7 +42,7 @@ export const parseTestSuite = (suite: Array<TestRun>): ParsedSuite => {
     }
     result.outcomes.push({
       title: currentRun.fullName,
-      status,
+      outcome,
     })
   })
   return result
