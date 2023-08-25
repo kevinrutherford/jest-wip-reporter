@@ -1,19 +1,6 @@
-import { SuiteReport, TestOutcome } from './suite-report'
+import { classify } from './classify'
+import { SuiteReport } from './suite-report'
 import { TestRun } from './test-run'
-
-const classify = (run: TestRun): TestOutcome => {
-  switch (run.status) {
-    case 'passed':
-      return 'pass'
-    case 'todo':
-    case 'pending':
-    case 'skipped':
-    case 'disabled':
-      return 'wip'
-    default:
-      return 'fail'
-  }
-}
 
 export const parseTestSuite = (suite: Array<TestRun>): SuiteReport => {
   const result: SuiteReport = {
