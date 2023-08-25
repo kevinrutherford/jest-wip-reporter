@@ -1,4 +1,5 @@
 DEPCRUISE_CONFIG := .dependency-cruiser.cjs
+GRAPHS_DIR := graphs
 MK_COMPILED := .mk-compiled
 MK_LINTED := .mk-linted
 MK_PROD := .mk-prod
@@ -10,11 +11,11 @@ depcruise := npx depcruise --config $(DEPCRUISE_CONFIG)
 jest := npx jest --reporters `pwd`
 tsc := npx tsc -p tsconfig.json --noEmit
 
-.PHONY: check clean clobber prod
+.PHONY: all clean clobber prod
 
 # Software development - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-check: $(MK_COMPILED) $(MK_TESTED) $(MK_LINTED)
+all: $(GRAPHS_DIR)/modules.svg $(MK_COMPILED) $(MK_TESTED) $(MK_LINTED)
 
 $(MK_COMPILED): node_modules $(TS_SOURCES)
 	$(tsc)
@@ -41,6 +42,12 @@ tsc-watch:
 jest-watch:
 	$(jest) --watch
 
+$(GRAPHS_DIR)/modules.svg: $(SOURCES) $(GRAPHS_DIR) node_modules $(DEPCRUISE_CONFIG)
+	$(depcruise) --validate -T dot src | dot -Tsvg > $@
+
+$(GRAPHS_DIR):
+	mkdir -p $@
+
 # Production build - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 prod: $(MK_PROD)
@@ -54,6 +61,7 @@ $(MK_PROD): $(MK_COMPILED) $(MK_LINTED)
 clean:
 	rm -rf $(MK_LINTED) $(MK_COMPILED)
 	rm -f $(LINT_CACHE)
+	rm -rf $(GRAPHS_DIR)
 
 clobber: clean
 	rm -rf dist

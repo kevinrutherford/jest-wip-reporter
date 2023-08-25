@@ -1,6 +1,7 @@
 dist/
 .env
 .eslint-cache
+graphs/
 .jest/
 *.log
 .mk-*
