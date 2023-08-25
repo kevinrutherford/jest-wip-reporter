@@ -1,4 +1,5 @@
-import { parseTestSuite, TestRun } from '../src/parse-test-suite'
+import { parseTestSuite } from '../src/parse-test-suite'
+import { TestRun } from '../src/test-run'
 import { arbitraryString } from './helpers'
 
 describe('parseTestSuite', () => {
