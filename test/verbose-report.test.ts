@@ -13,7 +13,7 @@ describe('parseTestSuite', () => {
       {
         ancestorTitles: [],
         fullName: title,
-        status,
+        status: status as TestRun['status'],
       },
     ]
     const parsed = parseTestSuite(jestSuiteReport)

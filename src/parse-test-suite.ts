@@ -1,10 +1,7 @@
+import { AssertionResult } from '@jest/test-result'
 import { SuiteReport, TestOutcome } from './suite-report'
 
-export type TestRun = {
-  ancestorTitles: Array<string>,
-  fullName: string,
-  status: string,
-}
+export type TestRun = Pick<AssertionResult, 'ancestorTitles' | 'fullName' | 'status'>
 
 const classify = (run: TestRun): TestOutcome => {
   switch (run.status) {
