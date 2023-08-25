@@ -42,7 +42,7 @@ tsc-watch:
 jest-watch:
 	$(jest) --watch
 
-$(GRAPHS_DIR)/modules.svg: $(SOURCES) $(GRAPHS_DIR) node_modules $(DEPCRUISE_CONFIG)
+$(GRAPHS_DIR)/modules.svg: $(TS_SOURCES) $(GRAPHS_DIR) node_modules $(DEPCRUISE_CONFIG)
 	$(depcruise) --validate -T dot src | dot -Tsvg > $@
 
 $(GRAPHS_DIR):
