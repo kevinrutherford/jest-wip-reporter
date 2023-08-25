@@ -14,6 +14,7 @@ describe('parseTestSuite', () => {
       {
         ancestorTitles: [],
         fullName: title,
+        numPassingAsserts: 1,
         status: status as TestRun['status'],
       },
     ]
@@ -46,6 +47,7 @@ describe('parseTestSuite', () => {
       {
         ancestorTitles: [],
         fullName: title,
+        numPassingAsserts: 1,
         status: 'passed',
       },
     ]
@@ -78,6 +80,7 @@ describe('parseTestSuite', () => {
       {
         ancestorTitles: [],
         fullName: title,
+        numPassingAsserts: 1,
         status: 'failed',
       },
     ]
@@ -111,11 +114,13 @@ describe('parseTestSuite', () => {
       {
         ancestorTitles: [],
         fullName: title0,
+        numPassingAsserts: 1,
         status: 'failed',
       },
       {
         ancestorTitles: [],
         fullName: title1,
+        numPassingAsserts: 1,
         status: 'pending',
       },
     ]

@@ -7,6 +7,7 @@ describe('classify', () => {
     const jestTestRun: TestRun = {
       ancestorTitles: [],
       fullName: arbitraryString(),
+      numPassingAsserts: 1,
       status: 'passed',
     }
     const outcome = classify(jestTestRun)
@@ -20,6 +21,7 @@ describe('classify', () => {
     const jestTestRun: TestRun = {
       ancestorTitles: [],
       fullName: arbitraryString(),
+      numPassingAsserts: 0,
       status: 'passed',
     }
     const outcome = classify(jestTestRun)
@@ -38,6 +40,7 @@ describe('classify', () => {
     const jestTestRun: TestRun = {
       ancestorTitles: [],
       fullName: arbitraryString(),
+      numPassingAsserts: 1,
       status: status as TestRun['status'],
     }
     const outcome = classify(jestTestRun)
@@ -51,6 +54,7 @@ describe('classify', () => {
     const jestTestRun: TestRun = {
       ancestorTitles: [],
       fullName: arbitraryString(),
+      numPassingAsserts: 1,
       status: 'failed',
     }
     const outcome = classify(jestTestRun)
