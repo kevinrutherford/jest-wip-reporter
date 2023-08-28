@@ -1,8 +1,7 @@
-import chalk = require('chalk')
+import chalk from 'chalk'
 import type {
   AggregatedResult,
   Config,
-  TestContext,
   Reporter,
   Test,
   TestResult,
@@ -60,10 +59,7 @@ export default class JestReporter implements Reporter {
     this.overallSummary.wipTitles.push(...suite.wipTitles)
   }
 
-  onRunComplete(
-    test?: Set<TestContext>,
-    runResults?: AggregatedResult,
-  ): Promise<void> | void {
+  onRunComplete(_test?: unknown, runResults?: AggregatedResult): Promise<void> | void {
     if (!runResults) {
       this.out.write(`${chalk.redBright('\n\nNo run results!')}\n`)
       return
