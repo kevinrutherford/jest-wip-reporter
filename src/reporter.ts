@@ -8,12 +8,12 @@ import type {
   TestResult,
 } from '@jest/reporters'
 import { parseTestSuite } from './parse-test-suite'
-import { SuiteSummary } from './suite-summary'
+import * as SS from './suite-summary'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
   protected _globalConfig: Config.GlobalConfig
-  private overallSummary: SuiteSummary = {
+  private overallSummary: SS.SuiteSummary = {
     passedCount: 0,
     wipTitles: [],
     failedCount: 0,
@@ -89,15 +89,7 @@ export default class JestReporter implements Reporter {
       process.stdout.write(tr.failureMessage ?? '')
     })
     const runTime = (Date.now() - runResults.startTime) / 1000
-    process.stdout.write('Tests: ')
-    const report = []
-    if (this.overallSummary.passedCount > 0)
-      report.push(chalk.greenBright(`${this.overallSummary.passedCount} passed`))
-    if (this.overallSummary.wipTitles.length > 0)
-      report.push(chalk.yellowBright(`${this.overallSummary.wipTitles.length} wip`))
-    if (this.overallSummary.failedCount > 0)
-      report.push(chalk.redBright(`${this.overallSummary.failedCount} failed`))
-    process.stdout.write(report.join(', '))
+    SS.summarise(process.stdout)(this.overallSummary)
     process.stdout.write(`\nTime: ${runTime}s\n`)
   }
 
