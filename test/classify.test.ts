@@ -17,16 +17,23 @@ describe('classify', () => {
     })
   })
 
-  describe('given a passing test with no passing assertions', () => {
+  describe.each([
+    ['passed'],
+    ['todo'],
+    ['pending'],
+    ['skipped'],
+    ['disabled'],
+    ['failed'],
+  ])('given a %s test with no passing assertions', (status) => {
     const jestTestRun: TestRun = {
       ancestorTitles: [],
       fullName: arbitraryString(),
       numPassingAsserts: 0,
-      status: 'passed',
+      status: status as TestRun['status'],
     }
     const outcome = classify(jestTestRun)
 
-    it.failing('reports that the test is in the WIP state', () => {
+    it('reports that the test is in the WIP state', () => {
       expect(outcome).toBe('wip')
     })
   })
