@@ -33,37 +33,27 @@ export default class JestReporter implements Reporter {
   }
 
   onTestResult(_test: Test, testResult: TestResult): void {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const suite = parseTestSuite(testResult.testResults)
-    testResult.testResults.forEach((run) => {
-      switch (run.status) {
-        case 'passed':
-          if (run.numPassingAsserts === 0) {
-            this.out.write(chalk.yellowBright('?'))
-            if (process.env.JWR_VERBOSE)
-              this.out.write(` ${chalk.yellowBright(run.fullName)}\n`)
-          } else {
-            this.out.write(chalk.greenBright('.'))
-            if (process.env.JWR_VERBOSE)
-              this.out.write(` ${chalk.greenBright(run.fullName)}\n`)
-          }
+    suite.outcomes.forEach((outcome) => {
+      let indicator: string
+      let pen: chalk.Chalk
+      switch (outcome.outcome) {
+        case 'pass':
+          indicator = '.'
+          pen = chalk.greenBright
           break
-        case 'todo':
-        case 'pending':
-        case 'skipped':
-        case 'disabled':
-          this.out.write(chalk.yellowBright('?'))
-          if (process.env.JWR_VERBOSE)
-            this.out.write(` ${chalk.yellowBright(run.fullName)}\n`)
+        case 'wip':
+          indicator = '?'
+          pen = chalk.yellowBright
           break
-        case 'failed':
-          this.out.write(chalk.redBright('x'))
-          if (process.env.JWR_VERBOSE)
-            this.out.write(` ${chalk.redBright(run.fullName)}\n`)
+        case 'fail':
+          indicator = 'x'
+          pen = chalk.redBright
           break
-        default:
-          this.out.write(chalk.redBright('!'))
       }
+      this.out.write(pen(indicator))
+      if (process.env.JWR_VERBOSE)
+        this.out.write(` ${pen(outcome.title)}\n`)
     })
     this.overallSummary.passedCount += suite.passedCount
     this.overallSummary.failedCount += suite.failedCount
