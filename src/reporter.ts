@@ -1,26 +1,15 @@
 import chalk from 'chalk'
-import type {
-  AggregatedResult,
-  Config,
-  Reporter,
-  Test,
-  TestResult,
-} from '@jest/reporters'
+import type { AggregatedResult, Reporter, TestResult } from '@jest/reporters'
 import { parseTestSuite } from './parse-test-suite'
 import * as SS from './suite-summary'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
-  protected _globalConfig: Config.GlobalConfig
   private out = process.stdout
   private overallSummary: SS.SuiteSummary = {
     passedCount: 0,
     wipTitles: [],
     failedCount: 0,
-  }
-
-  constructor(globalConfig: Config.GlobalConfig) {
-    this._globalConfig = globalConfig
   }
 
   onRunStart(): void {
@@ -31,7 +20,7 @@ export default class JestReporter implements Reporter {
   onTestStart(): void {
   }
 
-  onTestResult(_test: Test, testResult: TestResult): void {
+  onTestResult(_test: unknown, testResult: TestResult): void {
     const suite = parseTestSuite(testResult.testResults)
     suite.outcomes.forEach((outcome) => {
       let indicator: string
