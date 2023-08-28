@@ -58,7 +58,7 @@ $(MK_PROD): $(MK_COMPILED) $(MK_LINTED)
 
 # CI - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-ci-checks: $(MK_COMPILED) $(MK_TESTED) $(MK_LINTED)
+ci-checks: $(MK_PROD) $(MK_TESTED)
 
 # Utilities - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
