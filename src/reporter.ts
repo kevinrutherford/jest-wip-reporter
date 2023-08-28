@@ -13,6 +13,7 @@ import * as SS from './suite-summary'
 export default class JestReporter implements Reporter {
   private _error?: Error
   protected _globalConfig: Config.GlobalConfig
+  private out = process.stdout
   private overallSummary: SS.SuiteSummary = {
     passedCount: 0,
     wipTitles: [],
@@ -23,9 +24,8 @@ export default class JestReporter implements Reporter {
     this._globalConfig = globalConfig
   }
 
-  // eslint-disable-next-line class-methods-use-this
   onRunStart(): void {
-    process.stdout.write('\n')
+    this.out.write('\n')
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -39,30 +39,30 @@ export default class JestReporter implements Reporter {
       switch (run.status) {
         case 'passed':
           if (run.numPassingAsserts === 0) {
-            process.stdout.write(chalk.yellowBright('?'))
+            this.out.write(chalk.yellowBright('?'))
             if (process.env.JWR_VERBOSE)
-              process.stdout.write(` ${chalk.yellowBright(run.fullName)}\n`)
+              this.out.write(` ${chalk.yellowBright(run.fullName)}\n`)
           } else {
-            process.stdout.write(chalk.greenBright('.'))
+            this.out.write(chalk.greenBright('.'))
             if (process.env.JWR_VERBOSE)
-              process.stdout.write(` ${chalk.greenBright(run.fullName)}\n`)
+              this.out.write(` ${chalk.greenBright(run.fullName)}\n`)
           }
           break
         case 'todo':
         case 'pending':
         case 'skipped':
         case 'disabled':
-          process.stdout.write(chalk.yellowBright('?'))
+          this.out.write(chalk.yellowBright('?'))
           if (process.env.JWR_VERBOSE)
-            process.stdout.write(` ${chalk.yellowBright(run.fullName)}\n`)
+            this.out.write(` ${chalk.yellowBright(run.fullName)}\n`)
           break
         case 'failed':
-          process.stdout.write(chalk.redBright('x'))
+          this.out.write(chalk.redBright('x'))
           if (process.env.JWR_VERBOSE)
-            process.stdout.write(` ${chalk.redBright(run.fullName)}\n`)
+            this.out.write(` ${chalk.redBright(run.fullName)}\n`)
           break
         default:
-          process.stdout.write(chalk.redBright('!'))
+          this.out.write(chalk.redBright('!'))
       }
     })
     this.overallSummary.passedCount += suite.passedCount
@@ -75,22 +75,22 @@ export default class JestReporter implements Reporter {
     runResults?: AggregatedResult,
   ): Promise<void> | void {
     if (!runResults) {
-      process.stdout.write(`${chalk.redBright('\n\nNo run results!')}\n`)
+      this.out.write(`${chalk.redBright('\n\nNo run results!')}\n`)
       return
     }
     if (this.overallSummary.wipTitles.length > 0) {
-      process.stdout.write(chalk.yellowBright('\n\nWork in progress:\n'))
+      this.out.write(chalk.yellowBright('\n\nWork in progress:\n'))
       this.overallSummary.wipTitles.forEach((title: string) => {
-        process.stdout.write(chalk.yellowBright(`? ${title}\n`))
+        this.out.write(chalk.yellowBright(`? ${title}\n`))
       })
     }
-    process.stdout.write('\n')
+    this.out.write('\n')
     runResults.testResults.forEach((tr: TestResult) => {
-      process.stdout.write(tr.failureMessage ?? '')
+      this.out.write(tr.failureMessage ?? '')
     })
     const runTime = (Date.now() - runResults.startTime) / 1000
-    SS.summarise(process.stdout)(this.overallSummary)
-    process.stdout.write(`\nTime: ${runTime}s\n`)
+    SS.summarise(this.out)(this.overallSummary)
+    this.out.write(`\nTime: ${runTime}s\n`)
   }
 
   getLastError(): Error | undefined {
