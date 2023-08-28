@@ -8,7 +8,7 @@ import type {
   TestResult,
 } from '@jest/reporters'
 import { parseTestSuite } from './parse-test-suite'
-import { SuiteSummary } from './suite-report'
+import { SuiteSummary } from './suite-summary'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
