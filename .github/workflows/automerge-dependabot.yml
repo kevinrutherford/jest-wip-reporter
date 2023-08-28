@@ -15,7 +15,7 @@ jobs:
 
       - name: Compile
         run: |
-          make clobber check
+          make clobber ci-checks
 
       - name: Dependabot metadata
         id: metadata

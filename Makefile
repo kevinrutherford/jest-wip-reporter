@@ -32,7 +32,7 @@ $(MK_LINTED): node_modules $(TS_SOURCES)
 	$(depcruise) src
 	@touch $@
 
-$(MK_TESTED): node_modules $(MK_PROD)
+$(MK_TESTED): node_modules $(TS_SOURCES)
 	$(jest)
 	@touch $@
 
@@ -56,10 +56,14 @@ $(MK_PROD): $(MK_COMPILED) $(MK_LINTED)
 	npx tsc -p tsconfig-prod.json
 	@touch $@
 
+# CI - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ci-checks: $(MK_COMPILED) $(MK_TESTED) $(MK_LINTED)
+
 # Utilities - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 clean:
-	rm -rf $(MK_LINTED) $(MK_COMPILED)
+	rm -rf .mk-*
 	rm -f $(LINT_CACHE)
 	rm -rf $(GRAPHS_DIR)
 
