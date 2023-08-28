@@ -5,7 +5,7 @@ type TestReport = {
   outcome: TestOutcome,
 }
 
-type SuiteSummary = {
+export type SuiteSummary = {
   passedCount: number,
   failedCount: number,
   wipTitles: Array<string>,
