@@ -36,10 +36,10 @@ $(MK_TESTED): node_modules $(TS_SOURCES)
 	$(jest)
 	@touch $@
 
-tsc-watch:
+tsc-watch: node_modules
 	$(tsc) --watch
 
-jest-watch:
+jest-watch: node_modules prod
 	$(jest) --watch
 
 $(GRAPHS_DIR)/modules.svg: $(TS_SOURCES) $(GRAPHS_DIR) node_modules $(DEPCRUISE_CONFIG)
@@ -70,4 +70,5 @@ clean:
 clobber: clean
 	rm -rf dist
 	rm -rf node_modules
+	rm -rf .jest
 
