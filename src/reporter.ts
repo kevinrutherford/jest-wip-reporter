@@ -1,7 +1,31 @@
 import chalk from 'chalk'
+import { WriteStream } from 'tty'
 import type { AggregatedResult, Reporter, TestResult } from '@jest/reporters'
 import { parseTestSuite } from './parse-test-suite'
 import * as SS from './suite-summary'
+import { TestReport } from './suite-report'
+
+const renderReport = (out: WriteStream) => (outcome: TestReport): void => {
+  let indicator: string
+  let pen: chalk.Chalk
+  switch (outcome.outcome) {
+    case 'pass':
+      indicator = '.'
+      pen = chalk.greenBright
+      break
+    case 'wip':
+      indicator = '?'
+      pen = chalk.yellowBright
+      break
+    case 'fail':
+      indicator = 'x'
+      pen = chalk.redBright
+      break
+  }
+  out.write(pen(indicator))
+  if (process.env.JWR_VERBOSE)
+    out.write(` ${pen(outcome.title)}\n`)
+}
 
 export default class JestReporter implements Reporter {
   private _error?: Error
@@ -22,30 +46,10 @@ export default class JestReporter implements Reporter {
 
   onTestResult(_test: unknown, testResult: TestResult): void {
     const suite = parseTestSuite(testResult.testResults)
-    suite.outcomes.forEach((outcome) => {
-      let indicator: string
-      let pen: chalk.Chalk
-      switch (outcome.outcome) {
-        case 'pass':
-          indicator = '.'
-          pen = chalk.greenBright
-          break
-        case 'wip':
-          indicator = '?'
-          pen = chalk.yellowBright
-          break
-        case 'fail':
-          indicator = 'x'
-          pen = chalk.redBright
-          break
-      }
-      this.out.write(pen(indicator))
-      if (process.env.JWR_VERBOSE)
-        this.out.write(` ${pen(outcome.title)}\n`)
-    })
     this.overallSummary.passedCount += suite.passedCount
     this.overallSummary.failedCount += suite.failedCount
     this.overallSummary.wipTitles.push(...suite.wipTitles)
+    suite.outcomes.forEach(renderReport(this.out))
   }
 
   onRunComplete(_test?: unknown, runResults?: AggregatedResult): Promise<void> | void {
