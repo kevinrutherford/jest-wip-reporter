@@ -1,31 +1,8 @@
 import chalk from 'chalk'
-import { WriteStream } from 'tty'
 import type { AggregatedResult, Reporter, TestResult } from '@jest/reporters'
 import { parseTestSuite } from './parse-test-suite'
 import * as SS from './suite-summary'
-import { TestReport } from './suite-report'
-
-const renderReport = (out: WriteStream) => (outcome: TestReport): void => {
-  let indicator: string
-  let pen: chalk.Chalk
-  switch (outcome.outcome) {
-    case 'pass':
-      indicator = '.'
-      pen = chalk.greenBright
-      break
-    case 'wip':
-      indicator = '?'
-      pen = chalk.yellowBright
-      break
-    case 'fail':
-      indicator = 'x'
-      pen = chalk.redBright
-      break
-  }
-  out.write(pen(indicator))
-  if (process.env.JWR_VERBOSE)
-    out.write(` ${pen(outcome.title)}\n`)
-}
+import { renderReport } from './render-report'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
