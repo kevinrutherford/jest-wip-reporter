@@ -148,4 +148,10 @@ describe('parseTestSuite', () => {
       expect(parsed.failedCount).toBe(1)
     })
   })
+
+  describe('given two tests in a suite', () => {
+    it.todo('the root is a suite')
+
+    it.todo('the root has two children')
+  })
 })

@@ -23,6 +23,7 @@ export const parseTestSuite = (suite: Array<TestRun>): SuiteReport => {
         break
     }
     result.outcomes.push({
+      _tag: 'test-report',
       title: currentRun.fullName,
       outcome,
     })
