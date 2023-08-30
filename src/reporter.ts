@@ -2,7 +2,7 @@ import chalk from 'chalk'
 import type { AggregatedResult, Reporter, TestResult } from '@jest/reporters'
 import { parseTestSuite } from './parse-test-suite'
 import * as SS from './suite-summary'
-import { renderTestReport } from './render-report'
+import { renderTestReport } from './render-test-report'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
