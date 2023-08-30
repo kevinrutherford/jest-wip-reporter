@@ -2,7 +2,7 @@ import chalk from 'chalk'
 import type { AggregatedResult, Reporter, TestResult } from '@jest/reporters'
 import { parseTestSuite } from './parse-test-suite'
 import * as SS from './suite-summary'
-import { renderReport } from './render-report'
+import { renderTestReport } from './render-report'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
@@ -22,11 +22,11 @@ export default class JestReporter implements Reporter {
   }
 
   onTestResult(_test: unknown, testResult: TestResult): void {
-    const suite = parseTestSuite(testResult.testResults)
-    this.overallSummary.passedCount += suite.passedCount
-    this.overallSummary.failedCount += suite.failedCount
-    this.overallSummary.wipTitles.push(...suite.wipTitles)
-    suite.outcomes.forEach(renderReport(this.out))
+    const collectionReport = parseTestSuite(testResult.testResults)
+    this.overallSummary.passedCount += collectionReport.passedCount
+    this.overallSummary.failedCount += collectionReport.failedCount
+    this.overallSummary.wipTitles.push(...collectionReport.wipTitles)
+    collectionReport.outcomes.forEach(renderTestReport(this.out))
   }
 
   onRunComplete(_test?: unknown, runResults?: AggregatedResult): Promise<void> | void {
