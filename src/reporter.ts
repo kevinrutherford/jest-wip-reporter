@@ -17,11 +17,7 @@ export default class JestReporter implements Reporter {
     this.out.write('\n')
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  onTestStart(): void {
-  }
-
-  onTestResult(_test: unknown, testResult: TestResult): void {
+  onTestFileResult(_test: unknown, testResult: TestResult): void {
     const collectionReport = parseTestSuite(testResult.testResults)
     this.overallSummary.passedCount += collectionReport.passedCount
     this.overallSummary.failedCount += collectionReport.failedCount
@@ -29,7 +25,7 @@ export default class JestReporter implements Reporter {
     collectionReport.outcomes.forEach(renderTestReport(this.out))
   }
 
-  onRunComplete(_test?: unknown, runResults?: AggregatedResult): Promise<void> | void {
+  onRunComplete(_test?: unknown, runResults?: AggregatedResult): void {
     if (!runResults) {
       this.out.write(`${chalk.redBright('\n\nNo run results!')}\n`)
       return
