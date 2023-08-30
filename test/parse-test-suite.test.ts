@@ -150,8 +150,31 @@ describe('parseTestSuite', () => {
   })
 
   describe('given two tests in a suite', () => {
-    it.todo('the root is a suite')
+    const commonAncestor = arbitraryString()
+    const title0 = arbitraryString()
+    const title1 = arbitraryString()
+    const jestSuiteReport: Array<TestRun> = [
+      {
+        ancestorTitles: [commonAncestor],
+        fullName: title0,
+        numPassingAsserts: 1,
+        status: 'failed',
+      },
+      {
+        ancestorTitles: [commonAncestor],
+        fullName: title1,
+        numPassingAsserts: 1,
+        status: 'pending',
+      },
+    ]
+    const parsed = parseTestSuite(jestSuiteReport)
 
-    it.todo('the root has two children')
+    it.failing('the collection contains one item', () => {
+      expect(parsed.outcomes).toHaveLength(1)
+    })
+
+    it.failing('the collection contains a suite', () => {
+      expect(parsed.outcomes[0]._tag).toBe('suite-report')
+    })
   })
 })
