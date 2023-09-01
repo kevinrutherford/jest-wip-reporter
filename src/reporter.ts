@@ -2,11 +2,12 @@ import chalk from 'chalk'
 import { pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import type { AggregatedResult, Reporter, TestResult } from '@jest/reporters'
-import { recordOn, toTestReport } from './parse-test-suite'
 import * as CS from './collection-summary'
 import { renderReport } from './render-test-report'
 import * as FR from './file-report'
 import { renderCollectionSummary } from './render-collection-summary'
+import { toTestReport } from './to-test-report'
+import { recordOn } from './record-on'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
