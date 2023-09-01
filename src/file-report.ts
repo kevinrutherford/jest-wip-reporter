@@ -1,4 +1,4 @@
-import { TestReport } from './suite-report'
+import { TestReport } from './test-report'
 
 export type FileReport = ReadonlyArray<TestReport>
 

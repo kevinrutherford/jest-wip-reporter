@@ -1,4 +1,4 @@
-import { TestOutcome } from './suite-report'
+import { TestOutcome } from './test-report'
 import { TestRun } from './test-run'
 
 export const classify = (run: TestRun): TestOutcome => {

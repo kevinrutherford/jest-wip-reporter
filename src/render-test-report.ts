@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 import { WriteStream } from 'tty'
-import { TestReport } from './suite-report'
+import { TestReport } from './test-report'
 
 type Report = TestReport
 

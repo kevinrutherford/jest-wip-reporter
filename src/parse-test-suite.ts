@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { classify } from './classify'
-import { TestReport } from './suite-report'
+import { TestReport } from './test-report'
 import { SuiteSummary } from './suite-summary'
 import { TestRun } from './test-run'
 
