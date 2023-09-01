@@ -11,11 +11,7 @@ import { renderCollectionSummary } from './render-collection-summary'
 export default class JestReporter implements Reporter {
   private _error?: Error
   private out = process.stdout
-  private overallSummary: CS.CollectionSummary = {
-    passedCount: 0,
-    wipTitles: [],
-    failedCount: 0,
-  }
+  private overallSummary = CS.create()
 
   onRunStart(): void {
     this.out.write('\n')
