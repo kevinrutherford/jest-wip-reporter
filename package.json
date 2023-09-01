@@ -24,7 +24,8 @@
   "dependencies": {
     "@jest/reporters": "^29.6.2",
     "@jest/test-result": "^29.6.4",
-    "chalk": "^4.1.1"
+    "chalk": "^4.1.1",
+    "fp-ts": "^2.16.1"
   },
   "devDependencies": {
     "@types/jest": "^29.5.3",
