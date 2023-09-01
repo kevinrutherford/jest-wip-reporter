@@ -5,6 +5,7 @@ import type { AggregatedResult, Reporter, TestResult } from '@jest/reporters'
 import { recordOn, toTestReport } from './parse-test-suite'
 import * as SS from './suite-summary'
 import { renderTestReport } from './render-test-report'
+import * as FR from './file-report'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
@@ -19,12 +20,12 @@ export default class JestReporter implements Reporter {
     this.out.write('\n')
   }
 
-  onTestFileResult(_test: unknown, testResult: TestResult): void {
+  onTestFileResult(_test: unknown, jestTestFileResult: TestResult): void {
     pipe(
-      testResult.testResults,
+      jestTestFileResult.testResults,
       RA.map(toTestReport),
       RA.map(recordOn(this.overallSummary)),
-      // RA.reduce([], (report, t) => [...report, t]),
+      RA.reduce(FR.initialState(), FR.addToReport),
       RA.map(renderTestReport(this.out)),
     )
   }
