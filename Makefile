@@ -64,11 +64,11 @@ ci-checks: $(MK_PROD) $(MK_TESTED)
 
 clean:
 	rm -rf .mk-*
+	rm -rf .jest
 	rm -f $(LINT_CACHE)
 	rm -rf $(GRAPHS_DIR)
 
 clobber: clean
 	rm -rf dist
 	rm -rf node_modules
-	rm -rf .jest
 
