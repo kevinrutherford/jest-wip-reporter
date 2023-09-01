@@ -3,14 +3,14 @@ import { pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import type { AggregatedResult, Reporter, TestResult } from '@jest/reporters'
 import { recordOn, toTestReport } from './parse-test-suite'
-import * as SS from './suite-summary'
+import * as CS from './collection-summary'
 import { renderReport } from './render-test-report'
 import * as FR from './file-report'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
   private out = process.stdout
-  private overallSummary: SS.SuiteSummary = {
+  private overallSummary: CS.CollectionSummary = {
     passedCount: 0,
     wipTitles: [],
     failedCount: 0,
@@ -46,7 +46,7 @@ export default class JestReporter implements Reporter {
       this.out.write(tr.failureMessage ?? '')
     })
     const runTime = (Date.now() - runResults.startTime) / 1000
-    SS.summarise(this.out)(this.overallSummary)
+    CS.summarise(this.out)(this.overallSummary)
     this.out.write(`\nTime: ${runTime}s\n`)
   }
 

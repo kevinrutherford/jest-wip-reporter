@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { classify } from './classify'
 import { TestReport } from './test-report'
-import { SuiteSummary } from './suite-summary'
+import { CollectionSummary } from './collection-summary'
 import { TestRun } from './test-run'
 
 export const toTestReport = (run: TestRun): TestReport => ({
@@ -10,7 +10,7 @@ export const toTestReport = (run: TestRun): TestReport => ({
   outcome: classify(run),
 })
 
-export const recordOn = (report: SuiteSummary) => (t: TestReport): TestReport => {
+export const recordOn = (report: CollectionSummary) => (t: TestReport): TestReport => {
   switch (t.outcome) {
     case 'pass':
       report.passedCount += 1
