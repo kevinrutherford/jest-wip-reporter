@@ -6,6 +6,7 @@ import { recordOn, toTestReport } from './parse-test-suite'
 import * as CS from './collection-summary'
 import { renderReport } from './render-test-report'
 import * as FR from './file-report'
+import { renderCollectionSummary } from './render-collection-summary'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
@@ -46,7 +47,7 @@ export default class JestReporter implements Reporter {
       this.out.write(tr.failureMessage ?? '')
     })
     const runTime = (Date.now() - runResults.startTime) / 1000
-    CS.summarise(this.out)(this.overallSummary)
+    renderCollectionSummary(this.out)(this.overallSummary)
     this.out.write(`\nTime: ${runTime}s\n`)
   }
 
