@@ -1,6 +1,12 @@
 import { classify } from './classify'
-import { SuiteReport } from './suite-report'
+import { SuiteReport, TestReport } from './suite-report'
 import { TestRun } from './test-run'
+
+export const toTestReport = (run: TestRun): TestReport => ({
+  _tag: 'test-report',
+  title: run.fullName,
+  outcome: classify(run),
+})
 
 export const parseTestSuite = (suite: Array<TestRun>): SuiteReport => {
   const result: SuiteReport = {
@@ -22,11 +28,7 @@ export const parseTestSuite = (suite: Array<TestRun>): SuiteReport => {
         result.failedCount += 1
         break
     }
-    result.outcomes.push({
-      _tag: 'test-report',
-      title: currentRun.fullName,
-      outcome,
-    })
+    result.outcomes.push(toTestReport(currentRun))
   })
   return result
 }
