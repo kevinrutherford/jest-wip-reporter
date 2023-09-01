@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { classify } from './classify'
-import { SuiteReport, TestReport } from './suite-report'
+import { TestReport } from './suite-report'
 import { SuiteSummary } from './suite-summary'
 import { TestRun } from './test-run'
 
@@ -23,19 +23,4 @@ export const recordOn = (report: SuiteSummary) => (t: TestReport): TestReport =>
       break
   }
   return t
-}
-
-export const parseTestSuite = (suite: Array<TestRun>): SuiteReport => {
-  const result: SuiteReport = {
-    passedCount: 0,
-    failedCount: 0,
-    wipTitles: [],
-    outcomes: [],
-  }
-  suite.forEach((currentRun) => {
-    const t = toTestReport(currentRun)
-    recordOn(result)(t)
-    result.outcomes.push(t)
-  })
-  return result
 }

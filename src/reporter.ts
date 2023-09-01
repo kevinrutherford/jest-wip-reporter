@@ -1,6 +1,8 @@
 import chalk from 'chalk'
+import { pipe } from 'fp-ts/function'
+import * as RA from 'fp-ts/ReadonlyArray'
 import type { AggregatedResult, Reporter, TestResult } from '@jest/reporters'
-import { parseTestSuite } from './parse-test-suite'
+import { recordOn, toTestReport } from './parse-test-suite'
 import * as SS from './suite-summary'
 import { renderTestReport } from './render-test-report'
 
@@ -18,11 +20,13 @@ export default class JestReporter implements Reporter {
   }
 
   onTestFileResult(_test: unknown, testResult: TestResult): void {
-    const collectionReport = parseTestSuite(testResult.testResults)
-    this.overallSummary.passedCount += collectionReport.passedCount
-    this.overallSummary.failedCount += collectionReport.failedCount
-    this.overallSummary.wipTitles.push(...collectionReport.wipTitles)
-    collectionReport.outcomes.forEach(renderTestReport(this.out))
+    pipe(
+      testResult.testResults,
+      RA.map(toTestReport),
+      RA.map(recordOn(this.overallSummary)),
+      // RA.reduce([], (report, t) => [...report, t]),
+      RA.map(renderTestReport(this.out)),
+    )
   }
 
   onRunComplete(_test?: unknown, runResults?: AggregatedResult): void {
