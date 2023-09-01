@@ -4,7 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import type { AggregatedResult, Reporter, TestResult } from '@jest/reporters'
 import { recordOn, toTestReport } from './parse-test-suite'
 import * as SS from './suite-summary'
-import { renderTestReport } from './render-test-report'
+import { renderReport } from './render-test-report'
 import * as FR from './file-report'
 
 export default class JestReporter implements Reporter {
@@ -26,7 +26,7 @@ export default class JestReporter implements Reporter {
       RA.map(toTestReport),
       RA.map(recordOn(this.overallSummary)),
       RA.reduce(FR.initialState(), FR.addToReport),
-      RA.map(renderTestReport(this.out)),
+      RA.map(renderReport(this.out)),
     )
   }
 
