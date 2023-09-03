@@ -2,9 +2,9 @@ import chalk from 'chalk'
 import { WriteStream } from 'tty'
 import { TestReport } from './test-report'
 
-type Report = TestReport
+export type Report = TestReport
 
-const isTestReport = (r: Report): r is TestReport => r._tag === 'test-report'
+export const isTestReport = (r: Report): r is TestReport => r._tag === 'test-report'
 
 export const renderTestReport = (out: WriteStream) => (outcome: TestReport): void => {
   let indicator: string
@@ -26,11 +26,4 @@ export const renderTestReport = (out: WriteStream) => (outcome: TestReport): voi
   out.write(pen(indicator))
   if (process.env.JWR_VERBOSE)
     out.write(` ${pen(outcome.title)}\n`)
-}
-
-export const renderReport = (out: WriteStream) => (r: Report): void => {
-  if (isTestReport(r))
-    renderTestReport(out)(r)
-  else
-    throw new Error('Unknown type of report')
 }

@@ -3,7 +3,6 @@ import { pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import type { AggregatedResult, Reporter, TestResult } from '@jest/reporters'
 import * as CS from './collection-summary'
-import { renderReport } from './render-test-report'
 import * as FR from './file-report'
 import { renderCollectionSummary } from './render-collection-summary'
 import { toTestReport } from './to-test-report'
@@ -23,8 +22,8 @@ export default class JestReporter implements Reporter {
       jestTestFileResult.testResults,
       RA.map(toTestReport),
       RA.map(recordOn(this.overallSummary)),
-      RA.reduce(FR.initialState(), FR.addToReport),
-      RA.map(renderReport(this.out)),
+      FR.constructTreeOfSuites,
+      RA.map(FR.renderReport(this.out)),
     )
   }
 
