@@ -1,10 +1,6 @@
 import chalk from 'chalk'
 import { WriteStream } from 'tty'
-import { TestReport } from './test-report'
-
-export type Report = TestReport
-
-export const isTestReport = (r: Report): r is TestReport => r._tag === 'test-report'
+import { TestReport } from './report'
 
 export const renderTestReport = (out: WriteStream) => (outcome: TestReport): void => {
   let indicator: string

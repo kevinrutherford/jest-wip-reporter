@@ -1,8 +1,8 @@
 import { WriteStream } from 'tty'
 import * as RA from 'fp-ts/ReadonlyArray'
 import { pipe } from 'fp-ts/function'
-import { TestReport } from './test-report'
-import { isTestReport, renderTestReport, Report } from './render-test-report'
+import { isTestReport, Report, TestReport } from './report'
+import { renderTestReport } from './render-test-report'
 
 export type FileReport = ReadonlyArray<Report>
 

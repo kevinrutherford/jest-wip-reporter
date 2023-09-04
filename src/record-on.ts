@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { TestReport } from './test-report'
+import { TestReport } from './report'
 import { CollectionSummary } from './collection-summary'
 
 export const recordOn = (report: CollectionSummary) => (t: TestReport): TestReport => {
