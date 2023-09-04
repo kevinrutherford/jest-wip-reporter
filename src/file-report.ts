@@ -13,7 +13,7 @@ export const constructTreeOfSuites = (report: FileReport): FileReport => pipe(
   RA.reduce([], addToReport),
 )
 
-export const renderReport = (out: WriteStream) => (r: Report): void => {
+const renderReport = (out: WriteStream) => (r: Report): void => {
   if (isTestReport(r))
     renderTestReport(out)(r)
   else
