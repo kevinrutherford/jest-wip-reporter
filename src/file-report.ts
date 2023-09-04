@@ -8,7 +8,7 @@ export type FileReport = ReadonlyArray<Report>
 
 const addToReport = (report: FileReport, t: TestReport): FileReport => [...report, t]
 
-export const constructTreeOfSuites = (report: FileReport): FileReport => pipe(
+export const constructTreeOfSuites = (report: ReadonlyArray<TestReport>): FileReport => pipe(
   report,
   RA.reduce([], addToReport),
 )
