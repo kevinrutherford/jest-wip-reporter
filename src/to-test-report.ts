@@ -6,5 +6,6 @@ export const toTestReport = (run: TestRun): TestReport => ({
   _tag: 'test-report',
   name: run.title,
   fullyQualifiedName: run.fullName,
+  ancestorNames: run.ancestorTitles,
   outcome: classify(run),
 })

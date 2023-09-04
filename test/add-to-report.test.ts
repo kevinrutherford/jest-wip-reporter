@@ -4,12 +4,14 @@ import { arbitraryString } from './helpers'
 
 describe('addToReport', () => {
   describe('given a test with an ancestor', () => {
+    const ancestorName = arbitraryString()
     const name = arbitraryString()
     const fileReport = FR.constructTreeOfSuites([
       {
         _tag: 'test-report',
         name,
         fullyQualifiedName: arbitraryString(),
+        ancestorNames: [ancestorName],
         outcome: 'pass',
       },
     ])
