@@ -16,7 +16,7 @@ describe('addToReport', () => {
       },
     ])
 
-    it.failing('adds a suite whose name is that of the ancestor', () => {
+    it('adds a suite whose name is that of the ancestor', () => {
       expect(isTestReport(fileReport[0])).toBe(false)
     })
 

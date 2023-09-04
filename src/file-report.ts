@@ -9,7 +9,20 @@ import { renderTestReport } from './render-test-report'
 
 export type FileReport = ReadonlyArray<Report>
 
-const addToReport = (report: FileReport, t: TestReport): FileReport => [...report, t]
+const addToReport = (report: FileReport, t: TestReport): FileReport => {
+  if (t.ancestorNames.length > 0) {
+    return [
+      ...report,
+      {
+        _tag: 'suite-report',
+        name: t.ancestorNames[0],
+        outcome: t.outcome,
+        children: [t],
+      },
+    ]
+  }
+  return [...report, t]
+}
 
 export const constructTreeOfSuites = (report: ReadonlyArray<TestReport>): FileReport => pipe(
   report,
