@@ -23,7 +23,7 @@ export default class JestReporter implements Reporter {
       RA.map(toTestReport),
       RA.map(recordOn(this.overallSummary)),
       FR.constructTreeOfSuites,
-      RA.map(FR.renderReport(this.out)),
+      FR.render(this.out),
     )
   }
 

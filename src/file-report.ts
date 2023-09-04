@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function'
 import { TestReport } from './test-report'
 import { isTestReport, renderTestReport, Report } from './render-test-report'
 
-export type FileReport = ReadonlyArray<TestReport>
+export type FileReport = ReadonlyArray<Report>
 
 const addToReport = (report: FileReport, t: TestReport): FileReport => [...report, t]
 
@@ -19,3 +19,9 @@ export const renderReport = (out: WriteStream) => (r: Report): void => {
   else
     throw new Error('Unknown type of report')
 }
+
+export const render = (out: WriteStream) => (fr: FileReport): void => pipe(
+  fr,
+  RA.map(renderReport(out)),
+  () => undefined,
+)
