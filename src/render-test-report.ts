@@ -25,5 +25,5 @@ export const renderTestReport = (out: WriteStream) => (outcome: TestReport): voi
   }
   out.write(pen(indicator))
   if (process.env.JWR_VERBOSE)
-    out.write(` ${pen(outcome.title)}\n`)
+    out.write(` ${pen(outcome.fullyQualifiedName)}\n`)
 }

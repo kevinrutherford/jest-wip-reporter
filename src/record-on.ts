@@ -8,7 +8,7 @@ export const recordOn = (report: CollectionSummary) => (t: TestReport): TestRepo
       report.passedCount += 1
       break
     case 'wip':
-      report.wipTitles.push(t.title)
+      report.wipTitles.push(t.fullyQualifiedName)
       break
     case 'fail':
       report.failedCount += 1

@@ -9,6 +9,7 @@ describe('classify', () => {
       fullName: arbitraryString(),
       numPassingAsserts: 1,
       status: 'passed',
+      title: arbitraryString(),
     }
     const outcome = classify(jestTestRun)
 
@@ -29,6 +30,7 @@ describe('classify', () => {
       fullName: arbitraryString(),
       numPassingAsserts: 0,
       status: status as TestRun['status'],
+      title: arbitraryString(),
     }
     const outcome = classify(jestTestRun)
 
@@ -43,6 +45,7 @@ describe('classify', () => {
       fullName: arbitraryString(),
       numPassingAsserts: 0,
       status: 'failed',
+      title: arbitraryString(),
     }
     const outcome = classify(jestTestRun)
 
@@ -62,6 +65,7 @@ describe('classify', () => {
       fullName: arbitraryString(),
       numPassingAsserts: 1,
       status: status as TestRun['status'],
+      title: arbitraryString(),
     }
     const outcome = classify(jestTestRun)
 
@@ -76,6 +80,7 @@ describe('classify', () => {
       fullName: arbitraryString(),
       numPassingAsserts: 1,
       status: 'failed',
+      title: arbitraryString(),
     }
     const outcome = classify(jestTestRun)
 

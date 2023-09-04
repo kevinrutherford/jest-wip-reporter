@@ -4,6 +4,7 @@ import { TestRun } from './test-run'
 
 export const toTestReport = (run: TestRun): TestReport => ({
   _tag: 'test-report',
-  title: run.fullName,
+  name: run.title,
+  fullyQualifiedName: run.fullName,
   outcome: classify(run),
 })
