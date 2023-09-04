@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { WriteStream } from 'tty'
 import * as RA from 'fp-ts/ReadonlyArray'
 import { pipe } from 'fp-ts/function'
-import { isTestReport, Report, TestReport } from './report'
+import {
+  isTestReport, Report, SuiteReport, TestReport,
+} from './report'
 import { renderTestReport } from './render-test-report'
 
 export type FileReport = ReadonlyArray<Report>
@@ -17,7 +20,14 @@ const renderReport = (out: WriteStream) => (r: Report): void => {
   if (isTestReport(r))
     renderTestReport(out)(r)
   else
-    throw new Error('Unknown type of report')
+    renderSuite(out)(r)
+}
+
+const renderSuite = (out: WriteStream) => (r: SuiteReport): void => {
+  if (process.env.JWR_VERBOSE) {
+    out.write(`${r.name}\n`)
+    r.children.forEach(renderReport(out))
+  }
 }
 
 export const render = (out: WriteStream) => (fr: FileReport): void => pipe(
