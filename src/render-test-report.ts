@@ -2,7 +2,9 @@ import chalk from 'chalk'
 import { WriteStream } from 'tty'
 import { TestReport } from './report'
 
-export const renderTestReport = (out: WriteStream) => (outcome: TestReport): void => {
+export const renderTestReport = (out: WriteStream, indentLevel: number) => (outcome: TestReport): void => {
+  if (process.env.JWR_VERBOSE)
+    out.write('  '.repeat(indentLevel))
   let indicator: string
   let pen: chalk.Chalk
   switch (outcome.outcome) {

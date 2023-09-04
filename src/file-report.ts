@@ -16,22 +16,22 @@ export const constructTreeOfSuites = (report: ReadonlyArray<TestReport>): FileRe
   RA.reduce([], addToReport),
 )
 
-const renderReport = (out: WriteStream) => (r: Report): void => {
+const renderReport = (out: WriteStream, indentLevel: number) => (r: Report): void => {
   if (isTestReport(r))
-    renderTestReport(out)(r)
+    renderTestReport(out, indentLevel)(r)
   else
-    renderSuite(out)(r)
+    renderSuite(out, indentLevel)(r)
 }
 
-const renderSuite = (out: WriteStream) => (r: SuiteReport): void => {
+const renderSuite = (out: WriteStream, indentLevel: number) => (r: SuiteReport): void => {
   if (process.env.JWR_VERBOSE) {
     out.write(`${r.name}\n`)
-    r.children.forEach(renderReport(out))
+    r.children.forEach(renderReport(out, indentLevel + 1))
   }
 }
 
 export const render = (out: WriteStream) => (fr: FileReport): void => pipe(
   fr,
-  RA.map(renderReport(out)),
+  RA.map(renderReport(out, 0)),
   () => undefined,
 )
