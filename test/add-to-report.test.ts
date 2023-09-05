@@ -65,7 +65,7 @@ describe('addToReport', () => {
       O.getOrElseW(() => { throw new Error('Expected the root node to be a suite') }),
     )
 
-    it.failing('adds both tests as children of the same suite node', () => {
+    it('adds both tests as children of the same suite node', () => {
       expect(suiteNode.children).toHaveLength(2)
     })
   })
