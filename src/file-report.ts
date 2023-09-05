@@ -54,9 +54,10 @@ const renderReport = (out: WriteStream, indentLevel: number) => (r: Report): voi
 
 const renderSuite = (out: WriteStream, indentLevel: number) => (r: SuiteReport): void => {
   if (process.env.JWR_VERBOSE) {
+    out.write('  '.repeat(indentLevel))
     out.write(`${r.name}\n`)
-    r.children.forEach(renderReport(out, indentLevel + 1))
   }
+  r.children.forEach(renderReport(out, indentLevel + 1))
 }
 
 export const render = (out: WriteStream) => (fr: FileReport): void => pipe(
