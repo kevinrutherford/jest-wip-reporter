@@ -9,7 +9,7 @@ export const renderTestReport = (out: WriteStream, indentLevel: number) => (outc
   let pen: chalk.Chalk
   switch (outcome.outcome) {
     case 'pass':
-      indicator = '.'
+      indicator = process.env.JWR_VERBOSE ? '✓' : '.'
       pen = chalk.greenBright
       break
     case 'wip':
