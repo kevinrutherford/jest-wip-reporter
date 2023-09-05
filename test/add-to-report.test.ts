@@ -36,4 +36,37 @@ describe('addToReport', () => {
       expect(isTestReport(firstChild)).toBe(true)
     })
   })
+
+  describe('given two tests with the same single ancestor', () => {
+    const ancestorName = arbitraryString()
+    const name1 = arbitraryString()
+    const name2 = arbitraryString()
+    const suiteNode = pipe(
+      [
+        {
+          _tag: 'test-report',
+          name: name1,
+          fullyQualifiedName: arbitraryString(),
+          ancestorNames: [ancestorName],
+          outcome: 'pass',
+        },
+        {
+          _tag: 'test-report',
+          name: name2,
+          fullyQualifiedName: arbitraryString(),
+          ancestorNames: [ancestorName],
+          outcome: 'pass',
+        },
+      ],
+      FR.constructTreeOfSuites,
+      RA.head,
+      O.getOrElseW(() => { throw new Error('Expected at least one node in the tree') }),
+      O.fromPredicate(isSuiteReport),
+      O.getOrElseW(() => { throw new Error('Expected the root node to be a suite') }),
+    )
+
+    it.failing('adds both tests as children of the same suite node', () => {
+      expect(suiteNode.children).toHaveLength(2)
+    })
+  })
 })
