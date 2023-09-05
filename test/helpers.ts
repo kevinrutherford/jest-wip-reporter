@@ -10,8 +10,8 @@ const arbitraryWord = (length: number = arbitraryNumber(3, 15)): string => (
     .replace(/0x/, '0y')
 )
 
-export const arbitraryString = (): string => {
-  const words = [...Array(arbitraryNumber(3, 20))]
-  words.map(() => arbitraryWord())
-  return words.join(' ')
-}
+export const arbitraryString = (): string => (
+  [...Array(arbitraryNumber(3, 20))]
+    .map(() => arbitraryWord())
+    .join(' ')
+)
