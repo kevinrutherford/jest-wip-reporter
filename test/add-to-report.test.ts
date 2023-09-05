@@ -70,7 +70,7 @@ describe('addToReport', () => {
     })
   })
 
-  describe.skip('given a single test with a grandparent', () => {
+  describe('given a single test with a grandparent', () => {
     let parent: SuiteReport
 
     beforeEach(() => {

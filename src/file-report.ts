@@ -11,32 +11,36 @@ import { renderTestReport } from './render-test-report'
 
 export type FileReport = ReadonlyArray<Report>
 
-const addToReport = (report: FileReport, t: TestReport): FileReport => {
-  if (t.ancestorNames.length === 0)
+const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['ancestorNames']): Array<Report> => {
+  if (ancestorNames.length === 0)
     return [...report, t]
   const ancestor = pipe(
     report,
-    RA.filter((node) => node.name === t.ancestorNames[0]),
+    RA.filter((node) => node.name === ancestorNames[0]),
     RA.head,
     O.filter(isSuiteReport),
     O.getOrElseW(() => undefined),
   )
   if (ancestor !== undefined) {
-    ancestor.children.push(t)
+    ancestor.children = add(ancestor.children, t, ancestorNames.slice(1))
     return report
   }
   return [
     ...report,
     {
       _tag: 'suite-report',
-      name: t.ancestorNames[0],
+      name: ancestorNames[0],
       outcome: t.outcome,
-      children: [t],
+      children: add([], t, ancestorNames.slice(1)),
     },
   ]
 }
 
-export const constructTreeOfSuites = (report: ReadonlyArray<TestReport>): FileReport => pipe(
+const addToReport = (report: Array<Report>, t: TestReport): Array<Report> => (
+  add(report, t, t.ancestorNames)
+)
+
+export const constructTreeOfSuites = (report: ReadonlyArray<TestReport>): Array<Report> => pipe(
   report,
   RA.reduce([], addToReport),
 )
