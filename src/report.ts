@@ -18,3 +18,5 @@ export type SuiteReport = {
 export type Report = TestReport | SuiteReport
 
 export const isTestReport = (r: Report): r is TestReport => r._tag === 'test-report'
+
+export const isSuiteReport = (r: Report): r is SuiteReport => r._tag === 'suite-report'
