@@ -56,6 +56,9 @@ $(MK_PROD): $(MK_COMPILED) $(MK_LINTED)
 	npx tsc -p tsconfig-prod.json
 	@touch $@
 
+publish: prod
+	npm publish
+
 # CI - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ci-checks: $(MK_PROD) $(MK_TESTED)
