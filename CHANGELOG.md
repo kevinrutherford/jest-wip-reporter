@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.2.0 (2023-09-07)
+
+### Changed
+
+* In verbose mode, test results are listed as an indented "tree" of describe blocks
+* In verbose mode, passing tests are marked with a ✓ symbol
+* A test with no passing assertions is now deemed to be WIP
+
 ## 0.1.1 (2023-08-21)
 
 ### Changed
