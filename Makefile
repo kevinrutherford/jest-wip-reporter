@@ -17,6 +17,10 @@ tsc := npx tsc -p tsconfig.json --noEmit
 
 all: $(GRAPHS_DIR)/modules.svg $(MK_COMPILED) $(MK_TESTED) $(MK_LINTED)
 
+render-test: all prod
+	JWR_VERBOSE=true npx jest --reporters `pwd`
+	npx jest --reporters `pwd`
+
 $(MK_COMPILED): node_modules $(TS_SOURCES)
 	$(tsc)
 	@touch $@
