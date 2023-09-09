@@ -45,15 +45,9 @@ export const constructTreeOfSuites = (report: ReadonlyArray<TestReport>): Array<
   RA.reduce([], addToReport),
 )
 
-const renderReport = (out: WriteStream, indentLevel: number) => (r: Report): void => {
+export const render = (out: WriteStream) => (fr: FileReport): void => {
   if (process.env.JWR_VERBOSE)
-    progressTree.renderReport(out, indentLevel)(r)
+    fr.forEach(progressTree.renderReport(out, 0))
   else
-    progressDots.renderReport(out)(r)
+    fr.forEach(progressDots.renderReport(out))
 }
-
-export const render = (out: WriteStream) => (fr: FileReport): void => pipe(
-  fr,
-  RA.map(renderReport(out, 0)),
-  () => undefined,
-)
