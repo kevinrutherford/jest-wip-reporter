@@ -4,8 +4,7 @@ import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import { pipe } from 'fp-ts/function'
 import {
-  isSuiteReport,
-  isTestReport, Report, TestReport,
+  isSuiteReport, Report, TestReport,
 } from './report'
 import * as progressDots from './progress-dots'
 import * as progressTree from './progress-tree'
@@ -47,18 +46,10 @@ export const constructTreeOfSuites = (report: ReadonlyArray<TestReport>): Array<
 )
 
 const renderReport = (out: WriteStream, indentLevel: number) => (r: Report): void => {
-  if (process.env.JWR_VERBOSE) {
-    if (isTestReport(r))
-      progressTree.renderTestReport(out, indentLevel)(r)
-    else {
-      out.write('  '.repeat(indentLevel))
-      out.write(`${r.name}\n`)
-      r.children.forEach(renderReport(out, indentLevel + 1))
-    }
-  } else if (isTestReport(r))
-    progressDots.renderTestReport(out)(r)
+  if (process.env.JWR_VERBOSE)
+    progressTree.renderReport(out, indentLevel)(r)
   else
-    r.children.forEach(renderReport(out, indentLevel + 1))
+    progressDots.renderReport(out)(r)
 }
 
 export const render = (out: WriteStream) => (fr: FileReport): void => pipe(

@@ -1,8 +1,8 @@
 import chalk from 'chalk'
 import { WriteStream } from 'tty'
-import { TestReport } from './report'
+import { isTestReport, Report, TestReport } from './report'
 
-export const renderTestReport = (out: WriteStream, indentLevel: number) => (outcome: TestReport): void => {
+const renderTestReport = (out: WriteStream, indentLevel: number) => (outcome: TestReport): void => {
   out.write('  '.repeat(indentLevel))
   let indicator: string
   let pen: chalk.Chalk
@@ -22,4 +22,14 @@ export const renderTestReport = (out: WriteStream, indentLevel: number) => (outc
   }
   out.write(pen(indicator))
   out.write(` ${pen(outcome.name)}\n`)
+}
+
+export const renderReport = (out: WriteStream, indentLevel: number) => (r: Report): void => {
+  if (isTestReport(r))
+    renderTestReport(out, indentLevel)(r)
+  else {
+    out.write('  '.repeat(indentLevel))
+    out.write(`${r.name}\n`)
+    r.children.forEach(renderReport(out, indentLevel + 1))
+  }
 }
