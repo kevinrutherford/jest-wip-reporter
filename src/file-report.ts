@@ -7,7 +7,8 @@ import {
   isSuiteReport,
   isTestReport, Report, SuiteReport, TestReport,
 } from './report'
-import { renderTestReport } from './render-test-report'
+import * as progressDots from './progress-dots'
+import * as progressTree from './progress-tree'
 
 export type FileReport = ReadonlyArray<Report>
 
@@ -46,9 +47,12 @@ export const constructTreeOfSuites = (report: ReadonlyArray<TestReport>): Array<
 )
 
 const renderReport = (out: WriteStream, indentLevel: number) => (r: Report): void => {
-  if (isTestReport(r))
-    renderTestReport(out, indentLevel)(r)
-  else
+  if (isTestReport(r)) {
+    if (process.env.JWR_VERBOSE)
+      progressTree.renderTestReport(out, indentLevel)(r)
+    else
+      progressDots.renderTestReport(out)(r)
+  } else
     renderSuite(out, indentLevel)(r)
 }
 
