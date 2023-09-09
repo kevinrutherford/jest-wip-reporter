@@ -21,17 +21,16 @@ export default class JestReporter implements Reporter {
   }
 
   onTestCaseResult(_test: unknown, jestTestResult: TestCaseResult): void {
-    if (process.env.JWR_PROGRESS !== 'tree') {
-      const r = toTestReport(jestTestResult)
+    const r = toTestReport(jestTestResult)
+    recordOn(this.overallSummary)(r)
+    if (process.env.JWR_PROGRESS !== 'tree')
       progressDots.renderTestReport(this.out)(r)
-    }
   }
 
   onTestFileResult(_test: unknown, jestTestFileResult: TestResult): void {
     pipe(
       jestTestFileResult.testResults,
       RA.map(toTestReport),
-      RA.map(recordOn(this.overallSummary)),
       FR.constructTreeOfSuites,
       FR.render(this.out),
     )
