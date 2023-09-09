@@ -1,7 +1,9 @@
 import chalk from 'chalk'
 import { pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
-import type { AggregatedResult, Reporter, TestResult } from '@jest/reporters'
+import type {
+  AggregatedResult, Reporter, TestResult,
+} from '@jest/reporters'
 import * as CS from './collection-summary'
 import * as FR from './file-report'
 import { renderCollectionSummary } from './render-collection-summary'

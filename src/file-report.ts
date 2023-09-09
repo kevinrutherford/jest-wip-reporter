@@ -46,7 +46,7 @@ export const constructTreeOfSuites = (report: ReadonlyArray<TestReport>): Array<
 )
 
 export const render = (out: WriteStream) => (fr: FileReport): void => {
-  if (process.env.JWR_VERBOSE)
+  if (process.env.JWR_PROGRESS === 'tree')
     fr.forEach(progressTree.renderReport(out, 0))
   else
     fr.forEach(progressDots.renderReport(out))

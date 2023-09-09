@@ -45,5 +45,5 @@ or any test that is skipped due to a different `describe` or `it` being marked w
 ### Configuration
 
 By default this reporter emits a single character for each executed test.
-To see test titles instead, set the environment variable `$JWR_VERBOSE` to any non-empty string.
+To see test titles instead, set the environment variable `$JWR_PROGRESS` to `tree`.
 

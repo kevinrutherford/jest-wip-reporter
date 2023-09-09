@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.0 (tbc)
+
+### Changed
+
+* Replace $JWR_VERBOSE with $JWR_PROGRESS
+
 ## 0.2.1 (2023-09-07)
 
 ### Changed
