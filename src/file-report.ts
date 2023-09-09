@@ -6,7 +6,6 @@ import { pipe } from 'fp-ts/function'
 import {
   isSuiteReport, Report, TestReport,
 } from './report'
-import * as progressDots from './progress-dots'
 import * as progressTree from './progress-tree'
 
 export type FileReport = ReadonlyArray<Report>
@@ -48,6 +47,4 @@ export const constructTreeOfSuites = (report: ReadonlyArray<TestReport>): Array<
 export const render = (out: WriteStream) => (fr: FileReport): void => {
   if (process.env.JWR_PROGRESS === 'tree')
     fr.forEach(progressTree.renderReport(out, 0))
-  else
-    fr.forEach(progressDots.renderReport(out))
 }

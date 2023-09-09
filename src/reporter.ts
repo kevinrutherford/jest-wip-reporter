@@ -2,13 +2,14 @@ import chalk from 'chalk'
 import { pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import type {
-  AggregatedResult, Reporter, TestResult,
+  AggregatedResult, Reporter, TestCaseResult, TestResult,
 } from '@jest/reporters'
 import * as CS from './collection-summary'
 import * as FR from './file-report'
 import { renderCollectionSummary } from './render-collection-summary'
 import { toTestReport } from './to-test-report'
 import { recordOn } from './record-on'
+import * as progressDots from './progress-dots'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
@@ -17,6 +18,13 @@ export default class JestReporter implements Reporter {
 
   onRunStart(): void {
     this.out.write('\n')
+  }
+
+  onTestCaseResult(_test: unknown, jestTestResult: TestCaseResult): void {
+    if (process.env.JWR_PROGRESS !== 'tree') {
+      const r = toTestReport(jestTestResult)
+      progressDots.renderReport(this.out)(r)
+    }
   }
 
   onTestFileResult(_test: unknown, jestTestFileResult: TestResult): void {
