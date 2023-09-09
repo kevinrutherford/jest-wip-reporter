@@ -1,8 +1,8 @@
 import chalk from 'chalk'
 import { WriteStream } from 'tty'
-import { isTestReport, Report, TestReport } from './report'
+import { TestReport } from './report'
 
-const renderTestReport = (out: WriteStream) => (outcome: TestReport): void => {
+export const renderTestReport = (out: WriteStream) => (outcome: TestReport): void => {
   let indicator: string
   let pen: chalk.Chalk
   switch (outcome.outcome) {
@@ -20,11 +20,4 @@ const renderTestReport = (out: WriteStream) => (outcome: TestReport): void => {
       break
   }
   out.write(pen(indicator))
-}
-
-export const renderReport = (out: WriteStream) => (r: Report): void => {
-  if (isTestReport(r))
-    renderTestReport(out)(r)
-  else
-    r.children.forEach(renderReport(out))
 }

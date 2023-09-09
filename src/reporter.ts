@@ -23,7 +23,7 @@ export default class JestReporter implements Reporter {
   onTestCaseResult(_test: unknown, jestTestResult: TestCaseResult): void {
     if (process.env.JWR_PROGRESS !== 'tree') {
       const r = toTestReport(jestTestResult)
-      progressDots.renderReport(this.out)(r)
+      progressDots.renderTestReport(this.out)(r)
     }
   }
 
