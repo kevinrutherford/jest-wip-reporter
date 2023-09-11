@@ -156,7 +156,7 @@ module.exports = {
         collapsePattern: 'node_modules/(@[^/]+/[^/]+|[^/]+)',
          theme: {
            graph: {
-             rankdir: 'TD',
+             rankdir: 'LR',
            },
         }
       },
