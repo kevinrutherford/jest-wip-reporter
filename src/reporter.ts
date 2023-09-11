@@ -7,8 +7,9 @@ import { toTestReport } from './to-test-report'
 import { recordOn } from './record-on'
 import * as progressDots from './progress-dots'
 import * as progressTree from './progress-tree'
-import { Report, TestReport } from './report'
+import { Report } from './report'
 import { Reporters } from './reporters'
+import * as wipReportList from './wip-report-list'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
@@ -16,7 +17,6 @@ export default class JestReporter implements Reporter {
   private overallSummary = CS.create()
   private fileReport: Array<Report> = []
   private reporters: Reporters
-  private wipTests: Array<TestReport> = []
 
   constructor() {
     this.reporters = {
@@ -25,6 +25,7 @@ export default class JestReporter implements Reporter {
       onSuiteFinish: [],
       onRunFinish: [],
     }
+    wipReportList.register(this.reporters)
     CS.register(this.reporters)
   }
 
@@ -40,8 +41,6 @@ export default class JestReporter implements Reporter {
   onTestCaseResult(_test: unknown, jestTestResult: TestCaseResult): void {
     const r = toTestReport(jestTestResult)
     recordOn(this.overallSummary)(r)
-    if (r.outcome === 'wip')
-      this.wipTests.push(r)
     switch (process.env.JWR_PROGRESS) {
       case 'tree':
         this.fileReport = progressTree.addToReport(this.fileReport, r)
@@ -65,12 +64,6 @@ export default class JestReporter implements Reporter {
       this.out.write(`${chalk.redBright('\n\nNo run results!')}\n`)
       return
     }
-    if (this.wipTests.length > 0) {
-      this.out.write(chalk.yellowBright('\n\nWork in progress:\n'))
-      this.wipTests.forEach((r: TestReport) => {
-        this.out.write(chalk.yellowBright(`? ${r.fullyQualifiedName}\n`))
-      })
-    }
     this.out.write('\n')
     runResults.testResults.forEach((tr: TestResult) => {
       this.out.write(tr.failureMessage ?? '')
@@ -78,7 +71,7 @@ export default class JestReporter implements Reporter {
     const runTime = (Date.now() - runResults.startTime) / 1000
     CS.renderCollectionSummary(this.out)(this.overallSummary)
     this.out.write(`\nTime: ${runTime}s\n`)
-    this.reporters.onSuiteStart.forEach((f) => f())
+    this.reporters.onRunFinish.forEach((f) => f())
   }
 
   getLastError(): Error | undefined {
