@@ -32,7 +32,7 @@ const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['an
   ]
 }
 
-const addToReport = (report: Array<Report>, t: TestReport): Array<Report> => (
+export const addToReport = (report: Array<Report>, t: TestReport): Array<Report> => (
   add(report, t, t.ancestorNames)
 )
 

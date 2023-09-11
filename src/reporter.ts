@@ -1,6 +1,4 @@
 import chalk from 'chalk'
-import { pipe } from 'fp-ts/function'
-import * as RA from 'fp-ts/ReadonlyArray'
 import type {
   AggregatedResult, Reporter, TestCaseResult, TestResult,
 } from '@jest/reporters'
@@ -11,32 +9,39 @@ import { toTestReport } from './to-test-report'
 import { recordOn } from './record-on'
 import * as progressDots from './progress-dots'
 import * as progressTree from './progress-tree'
+import { Report } from './report'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
   private out = process.stdout
   private overallSummary = CS.create()
+  private fileReport: Array<Report> = []
 
   onRunStart(): void {
     this.out.write('\n')
   }
 
+  onTestFileStart(): void {
+    this.fileReport = []
+  }
+
   onTestCaseResult(_test: unknown, jestTestResult: TestCaseResult): void {
     const r = toTestReport(jestTestResult)
     recordOn(this.overallSummary)(r)
-    if (process.env.JWR_PROGRESS !== 'tree')
-      progressDots.renderTestReport(this.out)(r)
+    switch (process.env.JWR_PROGRESS) {
+      case 'tree':
+        this.fileReport = FR.addToReport(this.fileReport, r)
+        break
+      default:
+        progressDots.renderTestReport(this.out)(r)
+        break
+    }
   }
 
-  onTestFileResult(_test: unknown, jestTestFileResult: TestResult): void {
+  onTestFileResult(): void {
     if (process.env.JWR_PROGRESS !== 'tree')
       return
-    const fr = pipe(
-      jestTestFileResult.testResults,
-      RA.map(toTestReport),
-      FR.constructTreeOfSuites,
-    )
-    fr.forEach(progressTree.renderReport(this.out, 0))
+    this.fileReport.forEach(progressTree.renderReport(this.out, 0))
   }
 
   onRunComplete(_test?: unknown, runResults?: AggregatedResult): void {
