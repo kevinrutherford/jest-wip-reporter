@@ -1,6 +1,12 @@
 # Change Log
 
-## 1.0.0 (tbc)
+## 1.1.0 (2023-09-11)
+
+### Changed
+
+* Always add tests to the tree when $JWR_PROGRESS=tree
+
+## 1.0.0 (2023-09-11)
 
 ### Changed
 
