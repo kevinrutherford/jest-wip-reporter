@@ -1,3 +1,5 @@
+import { Reporters } from './reporters'
+
 export type CollectionSummary = {
   passedCount: number,
   failedCount: number,
@@ -9,3 +11,7 @@ export const create = (): CollectionSummary => ({
   wipTitles: [],
   failedCount: 0,
 })
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const register = (host: Reporters): void => {
+}

@@ -8,19 +8,8 @@ import { toTestReport } from './to-test-report'
 import { recordOn } from './record-on'
 import * as progressDots from './progress-dots'
 import * as progressTree from './progress-tree'
-import { Report, TestReport } from './report'
-
-type SuiteStartReporter = () => void
-type TestFinishReporter = (r: TestReport) => void
-type SuiteFinishReporter = () => void
-type RunFinishReporter = () => void
-
-type Reporters = {
-  onSuiteStart: Array<SuiteStartReporter>,
-  onTestFinish: Array<TestFinishReporter>,
-  onSuiteFinish: Array<SuiteFinishReporter>,
-  onRunFinish: Array<RunFinishReporter>,
-}
+import { Report } from './report'
+import { Reporters } from './reporters'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
@@ -36,6 +25,7 @@ export default class JestReporter implements Reporter {
       onSuiteFinish: [],
       onRunFinish: [],
     }
+    CS.register(this.reporters)
   }
 
   onRunStart(): void {
