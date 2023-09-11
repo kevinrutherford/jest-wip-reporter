@@ -3,7 +3,6 @@ import type {
   AggregatedResult, Reporter, TestCaseResult, TestResult,
 } from '@jest/reporters'
 import * as CS from './collection-summary'
-import * as FR from './file-report'
 import { renderCollectionSummary } from './render-collection-summary'
 import { toTestReport } from './to-test-report'
 import { recordOn } from './record-on'
@@ -30,7 +29,7 @@ export default class JestReporter implements Reporter {
     recordOn(this.overallSummary)(r)
     switch (process.env.JWR_PROGRESS) {
       case 'tree':
-        this.fileReport = FR.addToReport(this.fileReport, r)
+        this.fileReport = progressTree.addToReport(this.fileReport, r)
         break
       default:
         progressDots.renderTestReport(this.out)(r)
