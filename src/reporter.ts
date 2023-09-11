@@ -50,7 +50,7 @@ export default class JestReporter implements Reporter {
   }
 
   onTestFileResult(): void {
-    this.reporters.onSuiteStart.forEach((f) => f())
+    this.reporters.onSuiteFinish.forEach((f) => f())
   }
 
   onRunComplete(_test?: unknown, runResults?: AggregatedResult): void {

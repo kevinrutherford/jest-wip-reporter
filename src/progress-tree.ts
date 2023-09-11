@@ -4,13 +4,15 @@ import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import { pipe } from 'fp-ts/function'
 import {
-  isSuiteReport, isTestReport, Report, TestReport,
+  isSuiteReport, isTestReport, Report, SuiteReport, TestReport,
 } from './report'
 import { Config, Reporters } from './reporters'
 
-const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['ancestorNames']): Array<Report> => {
-  if (ancestorNames.length === 0)
-    return [...report, t]
+const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['ancestorNames']): void => {
+  if (ancestorNames.length === 0) {
+    report.push(t)
+    return
+  }
   const ancestor = pipe(
     report,
     RA.filter((node) => node.name === ancestorNames[0]),
@@ -19,21 +21,20 @@ const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['an
     O.getOrElseW(() => undefined),
   )
   if (ancestor !== undefined) {
-    ancestor.children = add(ancestor.children, t, ancestorNames.slice(1))
-    return report
+    add(ancestor.children, t, ancestorNames.slice(1))
+    return
   }
-  return [
-    ...report,
-    {
-      _tag: 'suite-report',
-      name: ancestorNames[0],
-      outcome: t.outcome,
-      children: add([], t, ancestorNames.slice(1)),
-    },
-  ]
+  const r = {
+    _tag: 'suite-report',
+    name: ancestorNames[0],
+    outcome: t.outcome,
+    children: [],
+  } as SuiteReport
+  add(r.children, t, ancestorNames.slice(1))
+  report.push(r)
 }
 
-export const addToReport = (report: Array<Report>) => (t: TestReport): Array<Report> => (
+export const addToReport = (report: Array<Report>) => (t: TestReport): void => (
   add(report, t, t.ancestorNames)
 )
 
@@ -59,7 +60,7 @@ const renderTestReport = (out: WriteStream, indentLevel: number) => (outcome: Te
   out.write(` ${pen(outcome.name)}\n`)
 }
 
-export const renderReport = (out: WriteStream, indentLevel: number) => (r: Report): void => {
+const renderReport = (out: WriteStream, indentLevel: number) => (r: Report): void => {
   if (isTestReport(r))
     renderTestReport(out, indentLevel)(r)
   else {
@@ -69,9 +70,13 @@ export const renderReport = (out: WriteStream, indentLevel: number) => (r: Repor
   }
 }
 
+const renderSuite = (report: Array<Report>, config: Config) => {
+  report.forEach(renderReport(config.out, 0))
+}
+
 export const register = (host: Reporters, config: Config): void => {
-  let fileReport: Array<Report> = []
-  host.onSuiteStart.push(() => { fileReport = [] })
+  const fileReport: Array<Report> = []
+  host.onSuiteStart.push(() => { fileReport.length = 0 })
   host.onTestFinish.push(addToReport(fileReport))
-  host.onSuiteFinish.push(() => fileReport.forEach(renderReport(config.out, 0)))
+  host.onSuiteFinish.push(() => renderSuite(fileReport, config))
 }
