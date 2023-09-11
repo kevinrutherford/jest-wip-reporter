@@ -49,7 +49,6 @@ const renderCollectionSummary = (summary: CollectionSummary, config: Config) => 
   config.out.write(`\nTime: ${runTime}s\n`)
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const register = (host: Reporters, config: Config): void => {
   const report = create()
   host.onTestFinish.push(recordOn(report))

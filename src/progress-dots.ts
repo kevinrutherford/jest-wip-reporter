@@ -1,8 +1,9 @@
 import chalk from 'chalk'
 import { WriteStream } from 'tty'
 import { TestReport } from './report'
+import { Config, Reporters } from './reporters'
 
-export const renderTestReport = (out: WriteStream) => (outcome: TestReport): void => {
+const renderTestReport = (out: WriteStream) => (outcome: TestReport): void => {
   let indicator: string
   let pen: chalk.Chalk
   switch (outcome.outcome) {
@@ -20,4 +21,7 @@ export const renderTestReport = (out: WriteStream) => (outcome: TestReport): voi
       break
   }
   out.write(pen(indicator))
+}
+export const register = (host: Reporters, config: Config): void => {
+  host.onTestFinish.push(renderTestReport(config.out))
 }

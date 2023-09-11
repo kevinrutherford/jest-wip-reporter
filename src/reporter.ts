@@ -25,6 +25,8 @@ export default class JestReporter implements Reporter {
       onSuiteFinish: [],
       onRunFinish: [],
     }
+    if (process.env.JWR_PROGRESS !== 'tree')
+      progressDots.register(this.reporters, this.config)
     wipReportList.register(this.reporters, this.config)
     summaryReport.register(this.reporters, this.config)
   }
@@ -40,14 +42,8 @@ export default class JestReporter implements Reporter {
 
   onTestCaseResult(_test: unknown, jestTestResult: TestCaseResult): void {
     const r = toTestReport(jestTestResult)
-    switch (process.env.JWR_PROGRESS) {
-      case 'tree':
-        this.fileReport = progressTree.addToReport(this.fileReport, r)
-        break
-      default:
-        progressDots.renderTestReport(this.config.out)(r)
-        break
-    }
+    if (process.env.JWR_PROGRESS === 'tree')
+      this.fileReport = progressTree.addToReport(this.fileReport, r)
     this.reporters.onTestFinish.forEach((f) => f(r))
   }
 
