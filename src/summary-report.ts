@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import chalk from 'chalk'
-import { Config, Reporters } from './reporters'
+import { Config, Reporters, RunResults } from './reporters'
 import { TestReport } from './report'
 
 export type CollectionSummary = {
@@ -30,7 +30,7 @@ const recordOn = (report: CollectionSummary) => (t: TestReport): TestReport => {
   return t
 }
 
-const renderCollectionSummary = (summary: CollectionSummary, config: Config): void => {
+const renderCollectionSummary = (summary: CollectionSummary, config: Config) => (runResults: RunResults): void => {
   config.out.write('\nTests: ')
   const report = []
   if (summary.passedCount > 0)
@@ -40,12 +40,13 @@ const renderCollectionSummary = (summary: CollectionSummary, config: Config): vo
   if (summary.failedCount > 0)
     report.push(chalk.redBright(`${summary.failedCount} failed`))
   config.out.write(report.join(', '))
-  config.out.write('\n')
+  const runTime = (Date.now() - runResults.startTime) / 1000
+  config.out.write(`\nTime: ${runTime}s\n`)
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const register = (host: Reporters, config: Config): void => {
   const report = create()
   host.onTestFinish.push(recordOn(report))
-  host.onRunFinish.push(() => renderCollectionSummary(report, config))
+  host.onRunFinish.push(renderCollectionSummary(report, config))
 }

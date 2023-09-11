@@ -67,9 +67,7 @@ export default class JestReporter implements Reporter {
     runResults.testResults.forEach((tr: TestResult) => {
       this.config.out.write(tr.failureMessage ?? '')
     })
-    const runTime = (Date.now() - runResults.startTime) / 1000
-    this.config.out.write(`\nTime: ${runTime}s\n`)
-    this.reporters.onRunFinish.forEach((f) => f())
+    this.reporters.onRunFinish.forEach((f) => f(runResults))
   }
 
   getLastError(): Error | undefined {
