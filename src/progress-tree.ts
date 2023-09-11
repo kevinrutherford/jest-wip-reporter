@@ -7,8 +7,6 @@ import {
   isSuiteReport, isTestReport, Report, TestReport,
 } from './report'
 
-export type FileReport = ReadonlyArray<Report>
-
 const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['ancestorNames']): Array<Report> => {
   if (ancestorNames.length === 0)
     return [...report, t]
