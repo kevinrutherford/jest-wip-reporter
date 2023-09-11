@@ -6,13 +6,11 @@ import * as summaryReport from './summary-report'
 import { toTestReport } from './to-test-report'
 import * as progressDots from './progress-dots'
 import * as progressTree from './progress-tree'
-import { Report } from './report'
 import { Config, Reporters } from './reporters'
 import * as wipReportList from './wip-report-list'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
-  private fileReport: Array<Report> = []
   private reporters: Reporters
   private config: Config = {
     out: process.stdout,
@@ -25,8 +23,15 @@ export default class JestReporter implements Reporter {
       onSuiteFinish: [],
       onRunFinish: [],
     }
-    if (process.env.JWR_PROGRESS !== 'tree')
-      progressDots.register(this.reporters, this.config)
+    switch (process.env.JWR_PROGRESS) {
+      case 'tree':
+        progressTree.register(this.reporters, this.config)
+        break
+      case 'dots':
+      default:
+        progressDots.register(this.reporters, this.config)
+        break
+    }
     wipReportList.register(this.reporters, this.config)
     summaryReport.register(this.reporters, this.config)
   }
@@ -36,21 +41,15 @@ export default class JestReporter implements Reporter {
   }
 
   onTestFileStart(): void {
-    this.fileReport = []
     this.reporters.onSuiteStart.forEach((f) => f())
   }
 
   onTestCaseResult(_test: unknown, jestTestResult: TestCaseResult): void {
     const r = toTestReport(jestTestResult)
-    if (process.env.JWR_PROGRESS === 'tree')
-      this.fileReport = progressTree.addToReport(this.fileReport, r)
     this.reporters.onTestFinish.forEach((f) => f(r))
   }
 
   onTestFileResult(): void {
-    if (process.env.JWR_PROGRESS !== 'tree')
-      return
-    this.fileReport.forEach(progressTree.renderReport(this.config.out, 0))
     this.reporters.onSuiteStart.forEach((f) => f())
   }
 

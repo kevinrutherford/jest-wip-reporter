@@ -6,6 +6,7 @@ import { pipe } from 'fp-ts/function'
 import {
   isSuiteReport, isTestReport, Report, TestReport,
 } from './report'
+import { Config, Reporters } from './reporters'
 
 const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['ancestorNames']): Array<Report> => {
   if (ancestorNames.length === 0)
@@ -32,7 +33,7 @@ const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['an
   ]
 }
 
-export const addToReport = (report: Array<Report>, t: TestReport): Array<Report> => (
+export const addToReport = (report: Array<Report>) => (t: TestReport): Array<Report> => (
   add(report, t, t.ancestorNames)
 )
 
@@ -66,4 +67,11 @@ export const renderReport = (out: WriteStream, indentLevel: number) => (r: Repor
     out.write(`${r.name}\n`)
     r.children.forEach(renderReport(out, indentLevel + 1))
   }
+}
+
+export const register = (host: Reporters, config: Config): void => {
+  let fileReport: Array<Report> = []
+  host.onSuiteStart.push(() => { fileReport = [] })
+  host.onTestFinish.push(addToReport(fileReport))
+  host.onSuiteFinish.push(() => fileReport.forEach(renderReport(config.out, 0)))
 }

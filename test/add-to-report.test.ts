@@ -9,7 +9,7 @@ import * as progressTree from '../src/progress-tree'
 
 const constructTreeOfSuites = (report: ReadonlyArray<TestReport>): Array<Report> => pipe(
   report,
-  RA.reduce([], progressTree.addToReport),
+  RA.reduce([], (fr: Array<Report>, r: TestReport) => progressTree.addToReport(fr)(r)),
 )
 
 describe('addToReport', () => {

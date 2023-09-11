@@ -22,6 +22,7 @@ const renderTestReport = (out: WriteStream) => (outcome: TestReport): void => {
   }
   out.write(pen(indicator))
 }
+
 export const register = (host: Reporters, config: Config): void => {
   host.onTestFinish.push(renderTestReport(config.out))
 }
