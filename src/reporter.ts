@@ -12,7 +12,6 @@ import * as wipReportList from './wip-report-list'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
-  private overallSummary = summaryReport.create()
   private fileReport: Array<Report> = []
   private reporters: Reporters
   private config: Config = {
@@ -27,7 +26,7 @@ export default class JestReporter implements Reporter {
       onRunFinish: [],
     }
     wipReportList.register(this.reporters, this.config)
-    summaryReport.register(this.reporters)
+    summaryReport.register(this.reporters, this.config)
   }
 
   onRunStart(): void {
@@ -41,7 +40,6 @@ export default class JestReporter implements Reporter {
 
   onTestCaseResult(_test: unknown, jestTestResult: TestCaseResult): void {
     const r = toTestReport(jestTestResult)
-    summaryReport.recordOn(this.overallSummary)(r)
     switch (process.env.JWR_PROGRESS) {
       case 'tree':
         this.fileReport = progressTree.addToReport(this.fileReport, r)
@@ -70,7 +68,6 @@ export default class JestReporter implements Reporter {
       this.config.out.write(tr.failureMessage ?? '')
     })
     const runTime = (Date.now() - runResults.startTime) / 1000
-    summaryReport.renderCollectionSummary(this.config.out)(this.overallSummary)
     this.config.out.write(`\nTime: ${runTime}s\n`)
     this.reporters.onRunFinish.forEach((f) => f())
   }
