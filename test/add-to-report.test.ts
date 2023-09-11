@@ -2,8 +2,15 @@ import { pipe } from 'fp-ts/lib/function'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as FR from '../src/file-report'
-import { isSuiteReport, isTestReport, SuiteReport } from '../src/report'
+import {
+  isSuiteReport, isTestReport, Report, SuiteReport, TestReport,
+} from '../src/report'
 import { arbitraryString } from './helpers'
+
+const constructTreeOfSuites = (report: ReadonlyArray<TestReport>): Array<Report> => pipe(
+  report,
+  RA.reduce([], FR.addToReport),
+)
 
 describe('addToReport', () => {
   describe('given a test with an ancestor', () => {
@@ -19,7 +26,7 @@ describe('addToReport', () => {
           outcome: 'pass',
         },
       ],
-      FR.constructTreeOfSuites,
+      constructTreeOfSuites,
       RA.head,
       O.getOrElseW(() => { throw new Error('Expected at least one node in the tree') }),
       O.fromPredicate(isSuiteReport),
@@ -58,7 +65,7 @@ describe('addToReport', () => {
           outcome: 'pass',
         },
       ],
-      FR.constructTreeOfSuites,
+      constructTreeOfSuites,
       RA.head,
       O.getOrElseW(() => { throw new Error('Expected at least one node in the tree') }),
       O.fromPredicate(isSuiteReport),
@@ -87,7 +94,7 @@ describe('addToReport', () => {
             outcome: 'pass',
           },
         ],
-        FR.constructTreeOfSuites,
+        constructTreeOfSuites,
         RA.head,
         O.getOrElseW(() => { throw new Error('Expected at least one node in the tree') }),
         O.fromPredicate(isSuiteReport),
