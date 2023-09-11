@@ -8,15 +8,17 @@ import { recordOn } from './record-on'
 import * as progressDots from './progress-dots'
 import * as progressTree from './progress-tree'
 import { Report } from './report'
-import { Reporters } from './reporters'
+import { Config, Reporters } from './reporters'
 import * as wipReportList from './wip-report-list'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
-  private out = process.stdout
   private overallSummary = CS.create()
   private fileReport: Array<Report> = []
   private reporters: Reporters
+  private config: Config = {
+    out: process.stdout,
+  }
 
   constructor() {
     this.reporters = {
@@ -25,12 +27,12 @@ export default class JestReporter implements Reporter {
       onSuiteFinish: [],
       onRunFinish: [],
     }
-    wipReportList.register(this.reporters)
+    wipReportList.register(this.reporters, this.config)
     CS.register(this.reporters)
   }
 
   onRunStart(): void {
-    this.out.write('\n')
+    this.config.out.write('\n')
   }
 
   onTestFileStart(): void {
@@ -46,7 +48,7 @@ export default class JestReporter implements Reporter {
         this.fileReport = progressTree.addToReport(this.fileReport, r)
         break
       default:
-        progressDots.renderTestReport(this.out)(r)
+        progressDots.renderTestReport(this.config.out)(r)
         break
     }
     this.reporters.onTestFinish.forEach((f) => f(r))
@@ -55,22 +57,22 @@ export default class JestReporter implements Reporter {
   onTestFileResult(): void {
     if (process.env.JWR_PROGRESS !== 'tree')
       return
-    this.fileReport.forEach(progressTree.renderReport(this.out, 0))
+    this.fileReport.forEach(progressTree.renderReport(this.config.out, 0))
     this.reporters.onSuiteStart.forEach((f) => f())
   }
 
   onRunComplete(_test?: unknown, runResults?: AggregatedResult): void {
     if (!runResults) {
-      this.out.write(`${chalk.redBright('\n\nNo run results!')}\n`)
+      this.config.out.write(`${chalk.redBright('\n\nNo run results!')}\n`)
       return
     }
-    this.out.write('\n')
+    this.config.out.write('\n')
     runResults.testResults.forEach((tr: TestResult) => {
-      this.out.write(tr.failureMessage ?? '')
+      this.config.out.write(tr.failureMessage ?? '')
     })
     const runTime = (Date.now() - runResults.startTime) / 1000
-    CS.renderCollectionSummary(this.out)(this.overallSummary)
-    this.out.write(`\nTime: ${runTime}s\n`)
+    CS.renderCollectionSummary(this.config.out)(this.overallSummary)
+    this.config.out.write(`\nTime: ${runTime}s\n`)
     this.reporters.onRunFinish.forEach((f) => f())
   }
 
