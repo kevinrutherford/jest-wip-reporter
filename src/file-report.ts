@@ -1,12 +1,9 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
-import { WriteStream } from 'tty'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import { pipe } from 'fp-ts/function'
 import {
   isSuiteReport, Report, TestReport,
 } from './report'
-import * as progressTree from './progress-tree'
 
 export type FileReport = ReadonlyArray<Report>
 
@@ -43,8 +40,3 @@ export const constructTreeOfSuites = (report: ReadonlyArray<TestReport>): Array<
   report,
   RA.reduce([], addToReport),
 )
-
-export const render = (out: WriteStream) => (fr: FileReport): void => {
-  if (process.env.JWR_PROGRESS === 'tree')
-    fr.forEach(progressTree.renderReport(out, 0))
-}
