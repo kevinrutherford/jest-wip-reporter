@@ -10,6 +10,7 @@ import { renderCollectionSummary } from './render-collection-summary'
 import { toTestReport } from './to-test-report'
 import { recordOn } from './record-on'
 import * as progressDots from './progress-dots'
+import * as progressTree from './progress-tree'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
@@ -28,12 +29,14 @@ export default class JestReporter implements Reporter {
   }
 
   onTestFileResult(_test: unknown, jestTestFileResult: TestResult): void {
-    pipe(
+    if (process.env.JWR_PROGRESS !== 'tree')
+      return
+    const fr = pipe(
       jestTestFileResult.testResults,
       RA.map(toTestReport),
       FR.constructTreeOfSuites,
-      FR.render(this.out),
     )
+    fr.forEach(progressTree.renderReport(this.out, 0))
   }
 
   onRunComplete(_test?: unknown, runResults?: AggregatedResult): void {
