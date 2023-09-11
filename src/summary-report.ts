@@ -1,6 +1,8 @@
 /* eslint-disable no-param-reassign */
 import chalk from 'chalk'
-import { Config, Reporters, RunResults } from './reporters'
+import {
+  Config, FailureMessage, Reporters, RunResults,
+} from './reporters'
 import { TestReport } from './report'
 
 export type CollectionSummary = {
@@ -31,6 +33,9 @@ const recordOn = (report: CollectionSummary) => (t: TestReport): TestReport => {
 }
 
 const renderCollectionSummary = (summary: CollectionSummary, config: Config) => (runResults: RunResults): void => {
+  runResults.testResults.forEach((tr: FailureMessage) => {
+    config.out.write(tr.failureMessage ?? '')
+  })
   config.out.write('\nTests: ')
   const report = []
   if (summary.passedCount > 0)

@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 import type {
-  AggregatedResult, Reporter, TestCaseResult, TestResult,
+  AggregatedResult, Reporter, TestCaseResult,
 } from '@jest/reporters'
 import * as summaryReport from './summary-report'
 import { toTestReport } from './to-test-report'
@@ -59,15 +59,10 @@ export default class JestReporter implements Reporter {
   }
 
   onRunComplete(_test?: unknown, runResults?: AggregatedResult): void {
-    if (!runResults) {
+    if (runResults)
+      this.reporters.onRunFinish.forEach((f) => f(runResults))
+    else
       this.config.out.write(`${chalk.redBright('\n\nNo run results!')}\n`)
-      return
-    }
-    this.config.out.write('\n')
-    runResults.testResults.forEach((tr: TestResult) => {
-      this.config.out.write(tr.failureMessage ?? '')
-    })
-    this.reporters.onRunFinish.forEach((f) => f(runResults))
   }
 
   getLastError(): Error | undefined {

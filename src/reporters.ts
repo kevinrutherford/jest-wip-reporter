@@ -5,8 +5,13 @@ export type Config = {
   out: WriteStream,
 }
 
+export type FailureMessage = {
+  failureMessage?: string | null,
+}
+
 export type RunResults = {
   startTime: number,
+  testResults: Array<FailureMessage>,
 }
 
 type SuiteStartReporter = () => void
