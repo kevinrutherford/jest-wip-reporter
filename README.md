@@ -1,5 +1,8 @@
 # jest-wip-reporter
 
+[![npm version](https://badge.fury.io/js/jest-wip-reporter.svg)](https://www.npmjs.com/package/jest-wip-reporter)
+[![Downloads](https://img.shields.io/npm/dm/jest-wip-reporter.svg)](https://www.npmjs.com/package/jest-wip-reporter)
+
 An opinionated Jest reporter that treats all incomplete tests as WIP.
 
 ## Philosophy
