@@ -7,7 +7,7 @@ import { toTestReport } from './to-test-report'
 import { recordOn } from './record-on'
 import * as progressDots from './progress-dots'
 import * as progressTree from './progress-tree'
-import { Report } from './report'
+import { Report, TestReport } from './report'
 import { Reporters } from './reporters'
 
 export default class JestReporter implements Reporter {
@@ -16,6 +16,7 @@ export default class JestReporter implements Reporter {
   private overallSummary = CS.create()
   private fileReport: Array<Report> = []
   private reporters: Reporters
+  private wipTests: Array<TestReport> = []
 
   constructor() {
     this.reporters = {
@@ -39,6 +40,8 @@ export default class JestReporter implements Reporter {
   onTestCaseResult(_test: unknown, jestTestResult: TestCaseResult): void {
     const r = toTestReport(jestTestResult)
     recordOn(this.overallSummary)(r)
+    if (r.outcome === 'wip')
+      this.wipTests.push(r)
     switch (process.env.JWR_PROGRESS) {
       case 'tree':
         this.fileReport = progressTree.addToReport(this.fileReport, r)
@@ -62,10 +65,10 @@ export default class JestReporter implements Reporter {
       this.out.write(`${chalk.redBright('\n\nNo run results!')}\n`)
       return
     }
-    if (this.overallSummary.wipTitles.length > 0) {
+    if (this.wipTests.length > 0) {
       this.out.write(chalk.yellowBright('\n\nWork in progress:\n'))
-      this.overallSummary.wipTitles.forEach((title: string) => {
-        this.out.write(chalk.yellowBright(`? ${title}\n`))
+      this.wipTests.forEach((r: TestReport) => {
+        this.out.write(chalk.yellowBright(`? ${r.fullyQualifiedName}\n`))
       })
     }
     this.out.write('\n')
