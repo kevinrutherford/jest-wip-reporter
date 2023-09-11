@@ -3,7 +3,6 @@ import type {
   AggregatedResult, Reporter, TestCaseResult, TestResult,
 } from '@jest/reporters'
 import * as CS from './collection-summary'
-import { renderCollectionSummary } from './render-collection-summary'
 import { toTestReport } from './to-test-report'
 import { recordOn } from './record-on'
 import * as progressDots from './progress-dots'
@@ -74,7 +73,7 @@ export default class JestReporter implements Reporter {
       this.out.write(tr.failureMessage ?? '')
     })
     const runTime = (Date.now() - runResults.startTime) / 1000
-    renderCollectionSummary(this.out)(this.overallSummary)
+    CS.renderCollectionSummary(this.out)(this.overallSummary)
     this.out.write(`\nTime: ${runTime}s\n`)
     this.reporters.onSuiteStart.forEach((f) => f())
   }
