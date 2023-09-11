@@ -8,13 +8,35 @@ import { toTestReport } from './to-test-report'
 import { recordOn } from './record-on'
 import * as progressDots from './progress-dots'
 import * as progressTree from './progress-tree'
-import { Report } from './report'
+import { Report, TestReport } from './report'
+
+type SuiteStartReporter = () => void
+type TestFinishReporter = (r: TestReport) => void
+type SuiteFinishReporter = () => void
+type RunFinishReporter = () => void
+
+type Reporters = {
+  onSuiteStart: Array<SuiteStartReporter>,
+  onTestFinish: Array<TestFinishReporter>,
+  onSuiteFinish: Array<SuiteFinishReporter>,
+  onRunFinish: Array<RunFinishReporter>,
+}
 
 export default class JestReporter implements Reporter {
   private _error?: Error
   private out = process.stdout
   private overallSummary = CS.create()
   private fileReport: Array<Report> = []
+  private reporters: Reporters
+
+  constructor() {
+    this.reporters = {
+      onSuiteStart: [],
+      onTestFinish: [],
+      onSuiteFinish: [],
+      onRunFinish: [],
+    }
+  }
 
   onRunStart(): void {
     this.out.write('\n')
@@ -22,6 +44,7 @@ export default class JestReporter implements Reporter {
 
   onTestFileStart(): void {
     this.fileReport = []
+    this.reporters.onSuiteStart.forEach((f) => f())
   }
 
   onTestCaseResult(_test: unknown, jestTestResult: TestCaseResult): void {
@@ -35,12 +58,14 @@ export default class JestReporter implements Reporter {
         progressDots.renderTestReport(this.out)(r)
         break
     }
+    this.reporters.onTestFinish.forEach((f) => f(r))
   }
 
   onTestFileResult(): void {
     if (process.env.JWR_PROGRESS !== 'tree')
       return
     this.fileReport.forEach(progressTree.renderReport(this.out, 0))
+    this.reporters.onSuiteStart.forEach((f) => f())
   }
 
   onRunComplete(_test?: unknown, runResults?: AggregatedResult): void {
@@ -61,6 +86,7 @@ export default class JestReporter implements Reporter {
     const runTime = (Date.now() - runResults.startTime) / 1000
     renderCollectionSummary(this.out)(this.overallSummary)
     this.out.write(`\nTime: ${runTime}s\n`)
+    this.reporters.onSuiteStart.forEach((f) => f())
   }
 
   getLastError(): Error | undefined {
