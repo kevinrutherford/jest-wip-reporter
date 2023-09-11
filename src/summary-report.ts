@@ -1,6 +1,8 @@
+/* eslint-disable no-param-reassign */
 import chalk from 'chalk'
 import { WriteStream } from 'tty'
 import { Reporters } from './reporters'
+import { TestReport } from './report'
 
 export type CollectionSummary = {
   passedCount: number,
@@ -13,6 +15,21 @@ export const create = (): CollectionSummary => ({
   wipTitles: [],
   failedCount: 0,
 })
+
+export const recordOn = (report: CollectionSummary) => (t: TestReport): TestReport => {
+  switch (t.outcome) {
+    case 'pass':
+      report.passedCount += 1
+      break
+    case 'wip':
+      report.wipTitles.push(t.fullyQualifiedName)
+      break
+    case 'fail':
+      report.failedCount += 1
+      break
+  }
+  return t
+}
 
 export const renderCollectionSummary = (out: WriteStream) => (summary: CollectionSummary): void => {
   out.write('Tests: ')

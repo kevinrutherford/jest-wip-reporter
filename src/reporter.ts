@@ -2,9 +2,8 @@ import chalk from 'chalk'
 import type {
   AggregatedResult, Reporter, TestCaseResult, TestResult,
 } from '@jest/reporters'
-import * as CS from './collection-summary'
+import * as summaryReport from './summary-report'
 import { toTestReport } from './to-test-report'
-import { recordOn } from './record-on'
 import * as progressDots from './progress-dots'
 import * as progressTree from './progress-tree'
 import { Report } from './report'
@@ -13,7 +12,7 @@ import * as wipReportList from './wip-report-list'
 
 export default class JestReporter implements Reporter {
   private _error?: Error
-  private overallSummary = CS.create()
+  private overallSummary = summaryReport.create()
   private fileReport: Array<Report> = []
   private reporters: Reporters
   private config: Config = {
@@ -28,7 +27,7 @@ export default class JestReporter implements Reporter {
       onRunFinish: [],
     }
     wipReportList.register(this.reporters, this.config)
-    CS.register(this.reporters)
+    summaryReport.register(this.reporters)
   }
 
   onRunStart(): void {
@@ -42,7 +41,7 @@ export default class JestReporter implements Reporter {
 
   onTestCaseResult(_test: unknown, jestTestResult: TestCaseResult): void {
     const r = toTestReport(jestTestResult)
-    recordOn(this.overallSummary)(r)
+    summaryReport.recordOn(this.overallSummary)(r)
     switch (process.env.JWR_PROGRESS) {
       case 'tree':
         this.fileReport = progressTree.addToReport(this.fileReport, r)
@@ -71,7 +70,7 @@ export default class JestReporter implements Reporter {
       this.config.out.write(tr.failureMessage ?? '')
     })
     const runTime = (Date.now() - runResults.startTime) / 1000
-    CS.renderCollectionSummary(this.config.out)(this.overallSummary)
+    summaryReport.renderCollectionSummary(this.config.out)(this.overallSummary)
     this.config.out.write(`\nTime: ${runTime}s\n`)
     this.reporters.onRunFinish.forEach((f) => f())
   }
