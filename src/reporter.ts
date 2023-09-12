@@ -1,7 +1,5 @@
 import chalk from 'chalk'
-import type {
-  AggregatedResult, Reporter, TestCaseResult,
-} from '@jest/reporters'
+import type { AggregatedResult, Reporter, TestResult } from '@jest/reporters'
 import * as summaryReport from './summary-report'
 import { toTestReport } from './to-test-report'
 import * as progressDots from './progress-dots'
@@ -40,16 +38,12 @@ export default class JestReporter implements Reporter {
     this.config.out.write('\n')
   }
 
-  onTestFileStart(): void {
+  onTestFileResult(_test: unknown, jestTestFileResult: TestResult): void {
     this.reporters.onSuiteStart.forEach((f) => f())
-  }
-
-  onTestCaseResult(_test: unknown, jestTestResult: TestCaseResult): void {
-    const r = toTestReport(jestTestResult)
-    this.reporters.onTestFinish.forEach((f) => f(r))
-  }
-
-  onTestFileResult(): void {
+    jestTestFileResult.testResults.forEach((jestTestResult) => {
+      const r = toTestReport(jestTestResult)
+      this.reporters.onTestFinish.forEach((f) => f(r))
+    })
     this.reporters.onSuiteFinish.forEach((f) => f())
   }
 
