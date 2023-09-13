@@ -1,6 +1,6 @@
 {
   "name": "jest-wip-reporter",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A Jest reporter that treats all incomplete tests as WIP",
   "files": [
     "dist"

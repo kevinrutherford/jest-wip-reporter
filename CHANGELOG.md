@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.1 (2023-09-13)
+
+### Changed
+
+* Report tests that have been skipped with it.skip
+
 ## 1.1.0 (2023-09-11)
 
 ### Changed
