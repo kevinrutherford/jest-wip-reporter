@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.0 (tbc)
+
+### Changed
+
+* When $JWR_PROGRESS=tree, test suites are coloured to match the "worst" outcome they contain
+
 ## 1.1.1 (2023-09-13)
 
 ### Changed
