@@ -90,7 +90,7 @@ describe('addToReport', () => {
         expect(suiteNode.children).toHaveLength(2)
       })
 
-      it.skip(`sets the outcome of the suite to ${expectedAncestorOutcome}`, () => {
+      it(`sets the outcome of the suite to ${expectedAncestorOutcome}`, () => {
         expect(suiteNode.outcome).toBe(expectedAncestorOutcome)
       })
     })

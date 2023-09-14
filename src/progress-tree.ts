@@ -22,6 +22,17 @@ const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['an
   )
   if (ancestor !== undefined) {
     add(ancestor.children, t, ancestorNames.slice(1))
+    switch (t.outcome) {
+      case 'fail':
+        ancestor.outcome = t.outcome
+        break
+      case 'wip':
+        if (ancestor.outcome === 'pass')
+          ancestor.outcome = t.outcome
+        break
+      case 'pass':
+        break
+    }
     return
   }
   const r = {
