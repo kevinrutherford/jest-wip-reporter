@@ -8,10 +8,11 @@ const rememberWipTests = (wipTests: Array<TestReport>) => (r: TestReport): void 
 }
 
 const renderWipTitles = (wipTests: Array<TestReport>, config: Config): void => {
+  const wipPen = (s: string) => config.out.write(chalk.yellowBright(s))
   if (wipTests.length > 0) {
-    config.out.write(chalk.yellowBright('\n\nWork in progress:\n'))
+    wipPen('\n\nWork in progress:\n')
     wipTests.forEach((r: TestReport) => {
-      config.out.write(chalk.yellowBright(`? ${r.fullyQualifiedName}\n`))
+      wipPen(`? ${r.fullyQualifiedName}\n`)
     })
   }
 }
