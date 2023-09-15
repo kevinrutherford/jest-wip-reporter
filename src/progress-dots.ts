@@ -1,29 +1,23 @@
-import chalk from 'chalk'
-import { WriteStream } from 'tty'
 import { Config } from './config'
 import { TestReport } from './report'
 import { Reporters } from './reporters'
 
-const renderTestReport = (out: WriteStream) => (outcome: TestReport): void => {
+const renderTestReport = (config: Config) => (t: TestReport): void => {
   let indicator: string
-  let pen: chalk.Chalk
-  switch (outcome.outcome) {
+  switch (t.outcome) {
     case 'pass':
       indicator = '.'
-      pen = chalk.greenBright
       break
     case 'wip':
       indicator = '?'
-      pen = chalk.yellowBright
       break
     case 'fail':
       indicator = 'x'
-      pen = chalk.redBright
       break
   }
-  out.write(pen(indicator))
+  config.pens[t.outcome](indicator)
 }
 
 export const register = (host: Reporters, config: Config): void => {
-  host.onTestFinish.push(renderTestReport(config.out))
+  host.onTestFinish.push(renderTestReport(config))
 }

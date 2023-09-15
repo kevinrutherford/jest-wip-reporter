@@ -13,6 +13,11 @@ export default class JestReporter implements Reporter {
   private reporters: Reporters
   private config: Config = {
     out: process.stdout,
+    pens: {
+      pass: (s) => process.stdout.write(chalk.greenBright(s)),
+      wip: (s) => process.stdout.write(chalk.yellowBright(s)),
+      fail: (s) => process.stdout.write(chalk.redBright(s)),
+    },
   }
 
   constructor() {

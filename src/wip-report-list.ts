@@ -1,4 +1,3 @@
-import chalk from 'chalk'
 import { Config } from './config'
 import { TestReport } from './report'
 import { Reporters } from './reporters'
@@ -9,7 +8,7 @@ const rememberWipTests = (wipTests: Array<TestReport>) => (r: TestReport): void 
 }
 
 const renderWipTitles = (wipTests: Array<TestReport>, config: Config): void => {
-  const wipPen = (s: string) => config.out.write(chalk.yellowBright(s))
+  const wipPen = config.pens.wip
   if (wipTests.length > 0) {
     wipPen('\n\nWork in progress:\n')
     wipTests.forEach((r: TestReport) => {
