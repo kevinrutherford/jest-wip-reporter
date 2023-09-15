@@ -49,7 +49,7 @@ export const addToReport = (report: Array<Report>) => (t: TestReport): void => (
 )
 
 const dots: Record<TestOutcome, string> = {
-  pass: '.',
+  pass: '✓',
   wip: '?',
   fail: 'x',
 }
