@@ -1,10 +1,8 @@
-import chalk from 'chalk'
-import { WriteStream } from 'tty'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import { pipe } from 'fp-ts/function'
 import {
-  isSuiteReport, isTestReport, Report, SuiteReport, TestOutcome, TestReport,
+  isSuiteReport, isTestReport, Report, SuiteReport, TestReport,
 } from './report'
 import { Reporters } from './reporters'
 import { Config } from './config'
@@ -50,21 +48,9 @@ export const addToReport = (report: Array<Report>) => (t: TestReport): void => (
   add(report, t, t.ancestorNames)
 )
 
-const selectPen = (outcome: TestOutcome): chalk.Chalk => {
-  switch (outcome) {
-    case 'pass':
-      return chalk.greenBright
-    case 'wip':
-      return chalk.yellowBright
-    case 'fail':
-      return chalk.redBright
-  }
-}
-
-const renderTestReport = (out: WriteStream, indentLevel: number) => (outcome: TestReport): void => {
-  out.write('  '.repeat(indentLevel))
+const renderTestReport = (config: Config, indentLevel: number) => (outcome: TestReport): void => {
   let indicator: string
-  const pen = selectPen(outcome.outcome)
+  const pen = config.pens[outcome.outcome]
   switch (outcome.outcome) {
     case 'pass':
       indicator = '✓'
@@ -76,23 +62,24 @@ const renderTestReport = (out: WriteStream, indentLevel: number) => (outcome: Te
       indicator = 'x'
       break
   }
-  out.write(pen(indicator))
-  out.write(` ${pen(outcome.name)}\n`)
+  pen('  '.repeat(indentLevel))
+  pen(indicator)
+  pen(` ${outcome.name}\n`)
 }
 
-const renderReport = (out: WriteStream, indentLevel: number) => (r: Report): void => {
+const renderReport = (config: Config, indentLevel: number) => (r: Report): void => {
   if (isTestReport(r))
-    renderTestReport(out, indentLevel)(r)
+    renderTestReport(config, indentLevel)(r)
   else {
-    const pen = selectPen(r.outcome)
-    out.write('  '.repeat(indentLevel))
-    out.write(`${pen(r.name)}\n`)
-    r.children.forEach(renderReport(out, indentLevel + 1))
+    const pen = config.pens[r.outcome]
+    pen('  '.repeat(indentLevel))
+    pen(`${r.name}\n`)
+    r.children.forEach(renderReport(config, indentLevel + 1))
   }
 }
 
 const renderSuite = (report: Array<Report>, config: Config) => {
-  report.forEach(renderReport(config.out, 0))
+  report.forEach(renderReport(config, 0))
 }
 
 export const register = (host: Reporters, config: Config): void => {
