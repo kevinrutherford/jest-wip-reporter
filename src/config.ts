@@ -1,5 +1,5 @@
 import { WriteStream } from 'tty'
-import { TestOutcome } from './report'
+import { TestOutcome } from './test-outcome'
 
 type Pen = (s: string) => void
 

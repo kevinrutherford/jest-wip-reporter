@@ -1,4 +1,4 @@
-export type TestOutcome = 'pass' | 'wip' | 'fail'
+import { TestOutcome } from './test-outcome'
 
 export type TestReport = {
   _tag: 'test-report',

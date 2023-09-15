@@ -1,6 +1,7 @@
 import { Config } from './config'
-import { TestOutcome, TestReport } from './report'
+import { TestReport } from './report'
 import { Reporters } from './reporters'
+import { TestOutcome } from './test-outcome'
 
 const dots: Record<TestOutcome, string> = {
   pass: '.',
