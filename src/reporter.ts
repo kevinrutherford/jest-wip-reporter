@@ -4,8 +4,9 @@ import * as summaryReport from './summary-report'
 import { toTestReport } from './to-test-report'
 import * as progressDots from './progress-dots'
 import * as progressTree from './progress-tree'
-import { Config, Reporters } from './reporters'
+import { Reporters } from './reporters'
 import * as wipReportList from './wip-report-list'
+import { Config } from './config'
 
 export default class JestReporter implements Reporter {
   private _error?: Error

@@ -1,9 +1,4 @@
-import { WriteStream } from 'tty'
 import { TestReport } from './report'
-
-export type Config = {
-  out: WriteStream,
-}
 
 export type FailureMessage = {
   failureMessage?: string | null,

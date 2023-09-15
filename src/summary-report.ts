@@ -1,9 +1,8 @@
 /* eslint-disable no-param-reassign */
 import chalk from 'chalk'
-import {
-  Config, FailureMessage, Reporters, RunResults,
-} from './reporters'
+import { FailureMessage, Reporters, RunResults } from './reporters'
 import { TestReport } from './report'
+import { Config } from './config'
 
 export type CollectionSummary = {
   passedCount: number,

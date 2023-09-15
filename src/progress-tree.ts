@@ -6,7 +6,8 @@ import { pipe } from 'fp-ts/function'
 import {
   isSuiteReport, isTestReport, Report, SuiteReport, TestOutcome, TestReport,
 } from './report'
-import { Config, Reporters } from './reporters'
+import { Reporters } from './reporters'
+import { Config } from './config'
 
 const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['ancestorNames']): void => {
   if (ancestorNames.length === 0) {

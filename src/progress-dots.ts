@@ -1,7 +1,8 @@
 import chalk from 'chalk'
 import { WriteStream } from 'tty'
+import { Config } from './config'
 import { TestReport } from './report'
-import { Config, Reporters } from './reporters'
+import { Reporters } from './reporters'
 
 const renderTestReport = (out: WriteStream) => (outcome: TestReport): void => {
   let indicator: string

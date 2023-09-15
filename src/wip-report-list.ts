@@ -1,6 +1,7 @@
 import chalk from 'chalk'
+import { Config } from './config'
 import { TestReport } from './report'
-import { Config, Reporters } from './reporters'
+import { Reporters } from './reporters'
 
 const rememberWipTests = (wipTests: Array<TestReport>) => (r: TestReport): void => {
   if (r.outcome === 'wip')
