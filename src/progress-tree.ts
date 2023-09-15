@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import { pipe } from 'fp-ts/function'
 import {
-  isSuiteReport, isTestReport, Report, SuiteReport, TestReport,
+  isSuiteReport, isTestReport, Report, SuiteReport, TestOutcome, TestReport,
 } from './report'
 import { Reporters } from './reporters'
 import { Config } from './config'
@@ -48,23 +48,17 @@ export const addToReport = (report: Array<Report>) => (t: TestReport): void => (
   add(report, t, t.ancestorNames)
 )
 
+const dots: Record<TestOutcome, string> = {
+  pass: '.',
+  wip: '?',
+  fail: 'x',
+}
+
 const renderTestReport = (config: Config, indentLevel: number) => (outcome: TestReport): void => {
-  let indicator: string
+  const dot = dots[outcome.outcome]
   const pen = config.pens[outcome.outcome]
-  switch (outcome.outcome) {
-    case 'pass':
-      indicator = '✓'
-      break
-    case 'wip':
-      indicator = '?'
-      break
-    case 'fail':
-      indicator = 'x'
-      break
-  }
   pen('  '.repeat(indentLevel))
-  pen(indicator)
-  pen(` ${outcome.name}\n`)
+  pen(`${dot} ${outcome.name}\n`)
 }
 
 const renderReport = (config: Config, indentLevel: number) => (r: Report): void => {
