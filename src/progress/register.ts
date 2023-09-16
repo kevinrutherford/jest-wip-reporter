@@ -1,5 +1,5 @@
-import * as progressDots from '../progress-dots'
-import * as progressTree from '../progress-tree'
+import * as progressDots from './progress-dots'
+import * as progressTree from './progress-tree'
 import { Reporters } from '../reporters'
 import { Config } from '../config'
 

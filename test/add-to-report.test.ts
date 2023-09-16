@@ -5,7 +5,7 @@ import {
   isSuiteReport, isTestReport, Report, SuiteReport, TestReport,
 } from '../src/report'
 import { arbitraryString } from './helpers'
-import * as progressTree from '../src/progress-tree'
+import * as progressTree from '../src/progress/progress-tree'
 import { TestOutcome } from '../src/test-outcome'
 
 const constructTreeOfSuites = (report: ReadonlyArray<TestReport>): Array<Report> => pipe(

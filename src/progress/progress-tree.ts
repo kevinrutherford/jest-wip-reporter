@@ -3,10 +3,10 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import { pipe } from 'fp-ts/function'
 import {
   isSuiteReport, isTestReport, Report, SuiteReport, TestReport,
-} from './report'
-import { Reporters } from './reporters'
-import { Config } from './config'
-import { TestOutcome } from './test-outcome'
+} from '../report'
+import { Reporters } from '../reporters'
+import { Config } from '../config'
+import { TestOutcome } from '../test-outcome'
 
 const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['ancestorNames']): void => {
   if (ancestorNames.length === 0) {
