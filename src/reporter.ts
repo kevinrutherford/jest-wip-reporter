@@ -2,8 +2,7 @@ import chalk from 'chalk'
 import type { AggregatedResult, Reporter, TestResult } from '@jest/reporters'
 import * as summaryReport from './summary-report'
 import { toTestReport } from './to-test-report'
-import * as progressDots from './progress-dots'
-import * as progressTree from './progress-tree'
+import * as progress from './progress'
 import { Reporters } from './reporters'
 import * as wipReportList from './wip-report-list'
 import { Config } from './config'
@@ -27,15 +26,7 @@ export default class JestReporter implements Reporter {
       onSuiteFinish: [],
       onRunFinish: [],
     }
-    switch (process.env.JWR_PROGRESS) {
-      case 'tree':
-        progressTree.register(this.reporters, this.config)
-        break
-      case 'dots':
-      default:
-        progressDots.register(this.reporters, this.config)
-        break
-    }
+    progress.register(this.reporters, this.config)
     wipReportList.register(this.reporters, this.config)
     summaryReport.register(this.reporters, this.config)
   }
