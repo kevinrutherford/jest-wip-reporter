@@ -55,7 +55,7 @@ const dots: Record<TestOutcome, string> = {
   fail: 'x',
 }
 
-const renderTestReport = (config: Config, indentLevel: number) => (outcome: TestReport): void => {
+export const renderTestReport = (config: Config, indentLevel: number) => (outcome: TestReport): void => {
   const dot = dots[outcome.outcome]
   const pen = config.pens[outcome.outcome]
   pen('  '.repeat(indentLevel))
