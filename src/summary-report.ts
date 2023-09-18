@@ -33,9 +33,9 @@ const recordOn = (report: CollectionSummary) => (t: TestReport): TestReport => {
 
 const renderCollectionSummary = (summary: CollectionSummary, config: Config) => (runResults: RunResults): void => {
   runResults.testResults.forEach((tr: FailureMessage) => {
-    config.out.write(tr.failureMessage ?? '')
+    config.write(tr.failureMessage ?? '')
   })
-  config.out.write('\nTests: ')
+  config.write('\nTests: ')
   const report = []
   if (summary.passedCount > 0)
     report.push(chalk.greenBright(`${summary.passedCount} passed`))
@@ -43,9 +43,9 @@ const renderCollectionSummary = (summary: CollectionSummary, config: Config) => 
     report.push(chalk.yellowBright(`${summary.wipTitles.length} wip`))
   if (summary.failedCount > 0)
     report.push(chalk.redBright(`${summary.failedCount} failed`))
-  config.out.write(report.join(', '))
+  config.write(report.join(', '))
   const runTime = (Date.now() - runResults.startTime) / 1000
-  config.out.write(`\nTime: ${runTime}s\n`)
+  config.write(`\nTime: ${runTime}s\n`)
 }
 
 export const register = (host: Reporters, config: Config): void => {

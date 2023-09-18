@@ -11,7 +11,7 @@ export default class JestReporter implements Reporter {
   private _error?: Error
   private reporters: Reporters
   private config: Config = {
-    out: process.stdout,
+    write: (s: string) => process.stdout.write(s),
     pens: {
       pass: (s) => process.stdout.write(chalk.greenBright(s)),
       wip: (s) => process.stdout.write(chalk.yellowBright(s)),
@@ -32,7 +32,7 @@ export default class JestReporter implements Reporter {
   }
 
   onRunStart(): void {
-    this.config.out.write('\n')
+    this.config.write('\n')
   }
 
   onTestFileResult(_test: unknown, jestTestFileResult: TestResult): void {
@@ -48,7 +48,7 @@ export default class JestReporter implements Reporter {
     if (runResults)
       this.reporters.onRunFinish.forEach((f) => f(runResults))
     else
-      this.config.out.write(`${chalk.redBright('\n\nNo run results!')}\n`)
+      this.config.write(`${chalk.redBright('\n\nNo run results!')}\n`)
   }
 
   getLastError(): Error | undefined {

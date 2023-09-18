@@ -1,9 +1,8 @@
-import { WriteStream } from 'tty'
 import { TestOutcome } from './test-outcome'
 
 type Pen = (s: string) => void
 
 export type Config = {
-  out: WriteStream,
+  write: (s: string) => void,
   pens: Record<TestOutcome, Pen>,
 }
