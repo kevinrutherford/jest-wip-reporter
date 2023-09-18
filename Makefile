@@ -8,16 +8,16 @@ TS_SOURCES := $(shell find src test -name '*.ts')
 LINT_CACHE := .eslint-cache
 
 depcruise := npx depcruise --config $(DEPCRUISE_CONFIG)
-jest := npx jest --reporters `pwd`
+jest := npx jest
 tsc := npx tsc -p tsconfig.json --noEmit
 
-.PHONY: all clean clobber prod
+.PHONY: all ci-checks clean clobber prod render-test
 
 # Software development - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 all: $(GRAPHS_DIR)/modules.svg $(MK_COMPILED) $(MK_TESTED) $(MK_LINTED)
 
-render-test: all prod
+render-test: clean all prod
 	JWR_PROGRESS=tree npx jest --reporters `pwd`
 	npx jest --reporters `pwd`
 
@@ -65,7 +65,7 @@ publish: prod
 
 # CI - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-ci-checks: $(MK_PROD) $(MK_TESTED)
+ci-checks: clobber $(MK_COMPILED) $(MK_TESTED) $(MK_LINTED) $(MK_PROD)
 
 # Utilities - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
