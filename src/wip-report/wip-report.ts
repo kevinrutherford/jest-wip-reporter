@@ -2,8 +2,7 @@ import { Config } from '../config'
 import { addToReport } from '../progress/progress-tree'
 import { Reporters } from '../reporters'
 import { TestReport } from '../test-report'
-import { renderSuite } from '../trees/render-tree'
-import { Report } from '../trees/tree'
+import { renderSuite, Report } from '../trees'
 
 const rememberWipTests = (wipTests: Array<TestReport>) => (r: TestReport): void => {
   if (r.outcome === 'wip')
