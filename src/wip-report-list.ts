@@ -28,7 +28,6 @@ const renderWipTree = (wipTests: Array<TestReport>, config: Config): void => {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const register = (host: Reporters, config: Config): void => {
   const wipTests: Array<TestReport> = []
   host.onTestFinish.push(rememberWipTests(wipTests))
