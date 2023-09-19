@@ -4,7 +4,7 @@ import * as summaryReport from './summary-report'
 import { toTestReport } from './to-test-report'
 import * as progress from './progress'
 import { Reporters } from './reporters'
-import * as wipReportList from './wip-report-list'
+import * as wipReport from './wip-report'
 import { Config } from './config'
 
 export default class JestReporter implements Reporter {
@@ -27,7 +27,7 @@ export default class JestReporter implements Reporter {
       onRunFinish: [],
     }
     progress.register(this.reporters, this.config)
-    wipReportList.register(this.reporters, this.config)
+    wipReport.register(this.reporters, this.config)
     summaryReport.register(this.reporters, this.config)
   }
 

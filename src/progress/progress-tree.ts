@@ -2,11 +2,11 @@ import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import { pipe } from 'fp-ts/function'
 import {
-  isSuiteReport, isTestReport, Report, SuiteReport, TestReport,
+  isSuiteReport, Report, SuiteReport, TestReport,
 } from '../report'
 import { Reporters } from '../reporters'
 import { Config } from '../config'
-import { TestOutcome } from '../test-outcome'
+import { renderSuite } from '../trees/render-tree'
 
 const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['ancestorNames']): void => {
   if (ancestorNames.length === 0) {
@@ -48,34 +48,6 @@ const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['an
 export const addToReport = (report: Array<Report>) => (t: TestReport): void => (
   add(report, t, t.ancestorNames)
 )
-
-const dots: Record<TestOutcome, string> = {
-  pass: '✓',
-  wip: '?',
-  fail: 'x',
-}
-
-export const renderTestReport = (config: Config, indentLevel: number) => (outcome: TestReport): void => {
-  const dot = dots[outcome.outcome]
-  const pen = config.pens[outcome.outcome]
-  pen('  '.repeat(indentLevel))
-  pen(`${dot} ${outcome.name}\n`)
-}
-
-const renderReport = (config: Config, indentLevel: number) => (r: Report): void => {
-  if (isTestReport(r))
-    renderTestReport(config, indentLevel)(r)
-  else {
-    const pen = config.pens[r.outcome]
-    pen('  '.repeat(indentLevel))
-    pen(`${r.name}\n`)
-    r.children.forEach(renderReport(config, indentLevel + 1))
-  }
-}
-
-export const renderSuite = (report: Array<Report>, config: Config): void => {
-  report.forEach(renderReport(config, 0))
-}
 
 export const register = (host: Reporters, config: Config): void => {
   const fileReport: Array<Report> = []

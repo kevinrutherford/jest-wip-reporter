@@ -73,9 +73,9 @@ clean:
 	rm -rf .mk-*
 	rm -rf .jest
 	rm -f $(LINT_CACHE)
-	rm -rf $(GRAPHS_DIR)
 
 clobber: clean
+	rm -rf $(GRAPHS_DIR)
 	rm -rf dist
 	rm -rf node_modules
 

@@ -1,7 +1,8 @@
-import { Config } from './config'
-import { addToReport, renderSuite } from './progress/progress-tree'
-import { Report, TestReport } from './report'
-import { Reporters } from './reporters'
+import { Config } from '../config'
+import { addToReport } from '../progress/progress-tree'
+import { Report, TestReport } from '../report'
+import { Reporters } from '../reporters'
+import { renderSuite } from '../trees/render-tree'
 
 const rememberWipTests = (wipTests: Array<TestReport>) => (r: TestReport): void => {
   if (r.outcome === 'wip')

@@ -1,6 +1,6 @@
 import { Config } from '../../src/config'
-import { renderTestReport } from '../../src/progress/progress-tree'
 import { TestReport } from '../../src/report'
+import { renderTestReport } from '../../src/trees/render-tree'
 import { arbitraryString } from '../helpers'
 
 describe('progress-tree', () => {
