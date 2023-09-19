@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import {
   isSuiteReport, isTestReport, Report, SuiteReport,
-} from '../src/report'
+} from '../src/trees/tree'
 import { arbitraryString } from './helpers'
 import * as progressTree from '../src/progress/progress-tree'
 import { TestOutcome } from '../src/test-outcome'

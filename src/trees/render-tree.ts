@@ -1,7 +1,7 @@
-import { isTestReport, Report } from '../report'
 import { Config } from '../config'
 import { TestOutcome } from '../test-outcome'
 import { TestReport } from '../test-report'
+import { isTestReport, Report } from './tree'
 
 const dots: Record<TestOutcome, string> = {
   pass: '✓',

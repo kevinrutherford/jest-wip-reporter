@@ -1,6 +1,6 @@
 import { Config } from '../../src/config'
-import { LeafNode } from '../../src/report'
 import { renderTestReport } from '../../src/trees/render-tree'
+import { LeafNode } from '../../src/trees/tree'
 import { arbitraryString } from '../helpers'
 
 describe('progress-tree', () => {

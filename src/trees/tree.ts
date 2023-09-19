@@ -1,5 +1,5 @@
-import { TestOutcome } from './test-outcome'
-import { TestReport } from './test-report'
+import { TestOutcome } from '../test-outcome'
+import { TestReport } from '../test-report'
 
 export type LeafNode = TestReport & {
   _tag: 'test-report',

@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import { pipe } from 'fp-ts/function'
-import { isSuiteReport, Report, SuiteReport } from '../report'
+import { isSuiteReport, Report, SuiteReport } from '../trees/tree'
 import { Reporters } from '../reporters'
 import { Config } from '../config'
 import { renderSuite } from '../trees/render-tree'
