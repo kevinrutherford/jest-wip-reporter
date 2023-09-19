@@ -1,7 +1,8 @@
 import { Config } from '../config'
 import { addToReport } from '../progress/progress-tree'
-import { Report, TestReport } from '../report'
+import { Report } from '../report'
 import { Reporters } from '../reporters'
+import { TestReport } from '../test-report'
 import { renderSuite } from '../trees/render-tree'
 
 const rememberWipTests = (wipTests: Array<TestReport>) => (r: TestReport): void => {

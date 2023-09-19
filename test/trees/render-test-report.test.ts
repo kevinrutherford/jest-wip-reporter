@@ -1,5 +1,5 @@
 import { Config } from '../../src/config'
-import { TestReport } from '../../src/report'
+import { TestReport } from '../../src/test-report'
 import { renderTestReport } from '../../src/trees/render-tree'
 import { arbitraryString } from '../helpers'
 

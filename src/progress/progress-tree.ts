@@ -1,12 +1,11 @@
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import { pipe } from 'fp-ts/function'
-import {
-  isSuiteReport, Report, SuiteReport, TestReport,
-} from '../report'
+import { isSuiteReport, Report, SuiteReport } from '../report'
 import { Reporters } from '../reporters'
 import { Config } from '../config'
 import { renderSuite } from '../trees/render-tree'
+import { TestReport } from '../test-report'
 
 const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['ancestorNames']): void => {
   if (ancestorNames.length === 0) {

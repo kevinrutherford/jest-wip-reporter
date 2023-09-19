@@ -1,4 +1,4 @@
-import { TestReport } from './report'
+import { TestReport } from './test-report'
 
 export type FailureMessage = {
   failureMessage?: string | null,

@@ -1,12 +1,5 @@
 import { TestOutcome } from './test-outcome'
-
-export type TestReport = {
-  _tag: 'test-report',
-  name: string,
-  fullyQualifiedName: string,
-  ancestorNames: ReadonlyArray<string>,
-  outcome: TestOutcome,
-}
+import { TestReport } from './test-report'
 
 export type SuiteReport = {
   _tag: 'suite-report',

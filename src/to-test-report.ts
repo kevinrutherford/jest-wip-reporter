@@ -1,5 +1,5 @@
 import { classify } from './classify'
-import { TestReport } from './report'
+import { TestReport } from './test-report'
 import { TestRun } from './test-run'
 
 export const toTestReport = (run: TestRun): TestReport => ({
