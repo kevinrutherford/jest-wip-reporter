@@ -1,9 +1,11 @@
 # Change Log
 
-## 1.2.0 (tbc)
+## 2.0.0 (tbc)
 
 ### Changed
 
+* Default WIP report is now tree-shaped
+* Set $JWR_WIP_REPORT=list to display the WIP report in the old format (full titles)
 * When $JWR_PROGRESS=tree, test suites are coloured to match the "worst" outcome they contain
 
 ## 1.1.1 (2023-09-13)

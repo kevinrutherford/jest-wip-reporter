@@ -73,7 +73,7 @@ const renderReport = (config: Config, indentLevel: number) => (r: Report): void 
   }
 }
 
-const renderSuite = (report: Array<Report>, config: Config) => {
+export const renderSuite = (report: Array<Report>, config: Config): void => {
   report.forEach(renderReport(config, 0))
 }
 
