@@ -24,7 +24,6 @@ describe('addToReport', () => {
     const suiteNode = pipe(
       [
         {
-          _tag: 'test-report',
           name,
           fullyQualifiedName: arbitraryString(),
           ancestorNames: [ancestorName],
@@ -108,7 +107,6 @@ describe('addToReport', () => {
       parent = pipe(
         [
           {
-            _tag: 'test-report',
             name,
             fullyQualifiedName: arbitraryString(),
             ancestorNames: [grandparentName, parentName],

@@ -9,7 +9,10 @@ import { TestReport } from '../test-report'
 
 const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['ancestorNames']): void => {
   if (ancestorNames.length === 0) {
-    report.push(t)
+    report.push({
+      ...t,
+      _tag: 'test-report',
+    })
     return
   }
   const ancestor = pipe(

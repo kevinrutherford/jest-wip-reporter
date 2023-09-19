@@ -1,12 +1,12 @@
 import { Config } from '../../src/config'
-import { TestReport } from '../../src/test-report'
+import { LeafNode } from '../../src/report'
 import { renderTestReport } from '../../src/trees/render-tree'
 import { arbitraryString } from '../helpers'
 
 describe('progress-tree', () => {
   describe('rendering a pass test', () => {
     const name = arbitraryString()
-    const t: TestReport = {
+    const t: LeafNode = {
       _tag: 'test-report',
       name,
       fullyQualifiedName: arbitraryString(),
