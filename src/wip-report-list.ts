@@ -21,5 +21,8 @@ const renderWipTitles = (wipTests: Array<TestReport>, config: Config): void => {
 export const register = (host: Reporters, config: Config): void => {
   const wipTests: Array<TestReport> = []
   host.onTestFinish.push(rememberWipTests(wipTests))
-  host.onRunFinish.push(() => renderWipTitles(wipTests, config))
+  const renderer = process.env.JWR_WIP_REPORT === 'list'
+    ? renderWipTitles(wipTests, config)
+    : renderWipTitles(wipTests, config)
+  host.onRunFinish.push(() => renderer)
 }
