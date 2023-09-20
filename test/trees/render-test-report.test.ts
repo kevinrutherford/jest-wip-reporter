@@ -5,10 +5,10 @@ import { arbitraryString } from '../helpers'
 
 describe('progress-tree', () => {
   describe('rendering a pass test', () => {
-    const name = arbitraryString()
+    const label = arbitraryString()
     const t: LeafNode = {
       _tag: 'test-report',
-      name,
+      label,
       outcome: 'pass',
     }
 
@@ -25,7 +25,7 @@ describe('progress-tree', () => {
       }
       renderTestReport(config, 0)(t)
 
-      expect(renderedLine).toContain(name)
+      expect(renderedLine).toContain(label)
     })
 
     it('does not render the standard dot', () => {

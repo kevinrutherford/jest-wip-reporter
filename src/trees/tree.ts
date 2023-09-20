@@ -2,13 +2,13 @@ import { TestOutcome } from '../test-outcome'
 
 export type LeafNode = {
   _tag: 'test-report',
-  name: string,
+  label: string,
   outcome: TestOutcome,
 }
 
 export type SuiteReport = {
   _tag: 'suite-report',
-  name: string,
+  label: string,
   outcome: TestOutcome,
   children: Array<Report>,
 }

@@ -12,7 +12,7 @@ export const renderTestReport = (config: Config, indentLevel: number) => (node: 
   const dot = dots[node.outcome]
   const pen = config.pens[node.outcome]
   pen('  '.repeat(indentLevel))
-  pen(`${dot} ${node.name}\n`)
+  pen(`${dot} ${node.label}\n`)
 }
 
 const renderReport = (config: Config, indentLevel: number) => (r: Report): void => {
@@ -21,7 +21,7 @@ const renderReport = (config: Config, indentLevel: number) => (r: Report): void 
   else {
     const pen = config.pens[r.outcome]
     pen('  '.repeat(indentLevel))
-    pen(`${r.name}\n`)
+    pen(`${r.label}\n`)
     r.children.forEach(renderReport(config, indentLevel + 1))
   }
 }

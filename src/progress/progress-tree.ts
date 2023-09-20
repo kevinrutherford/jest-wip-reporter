@@ -11,14 +11,15 @@ import {
 const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['ancestorNames']): void => {
   if (ancestorNames.length === 0) {
     report.push({
-      ...t,
       _tag: 'test-report',
+      label: t.name,
+      outcome: t.outcome,
     })
     return
   }
   const ancestor = pipe(
     report,
-    RA.filter((node) => node.name === ancestorNames[0]),
+    RA.filter((node) => node.label === ancestorNames[0]),
     RA.head,
     O.filter(isSuiteReport),
     O.getOrElseW(() => undefined),
@@ -40,7 +41,7 @@ const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['an
   }
   const r = {
     _tag: 'suite-report',
-    name: ancestorNames[0],
+    label: ancestorNames[0],
     outcome: t.outcome,
     children: [],
   } as SuiteReport

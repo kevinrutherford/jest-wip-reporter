@@ -38,7 +38,7 @@ describe('addToReport', () => {
     )
 
     it('adds a suite whose name is that of the ancestor', () => {
-      expect(suiteNode.name).toBe(ancestorName)
+      expect(suiteNode.label).toBe(ancestorName)
     })
 
     it('adds the test as a child of the suite', () => {
