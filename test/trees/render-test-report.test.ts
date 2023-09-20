@@ -7,7 +7,6 @@ describe('progress-tree', () => {
   describe('rendering a pass test', () => {
     const label = arbitraryString()
     const t: LeafNode = {
-      _tag: 'test-report',
       label,
       outcome: 'pass',
       children: [],

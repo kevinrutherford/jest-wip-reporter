@@ -4,12 +4,11 @@ import { pipe } from 'fp-ts/function'
 import { Reporters } from '../reporters'
 import { Config } from '../config'
 import { TestReport } from '../test-report'
-import { renderSuite, Report, SuiteReport } from '../trees'
+import { renderSuite, Report } from '../trees'
 
 const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['ancestorNames']): void => {
   if (ancestorNames.length === 0) {
     report.push({
-      _tag: 'test-report',
       label: t.name,
       outcome: t.outcome,
       children: [],
@@ -37,12 +36,11 @@ const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['an
     }
     return
   }
-  const r = {
-    _tag: 'suite-report',
+  const r: Report = {
     label: ancestorNames[0],
     outcome: t.outcome,
     children: [],
-  } as SuiteReport
+  }
   add(r.children, t, ancestorNames.slice(1))
   report.push(r)
 }
