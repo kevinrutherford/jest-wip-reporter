@@ -9,7 +9,6 @@ describe('progress-tree', () => {
     const t: LeafNode = {
       _tag: 'test-report',
       name,
-      fullyQualifiedName: arbitraryString(),
       outcome: 'pass',
     }
 

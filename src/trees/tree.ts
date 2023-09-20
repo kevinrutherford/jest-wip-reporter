@@ -3,7 +3,6 @@ import { TestOutcome } from '../test-outcome'
 export type LeafNode = {
   _tag: 'test-report',
   name: string,
-  fullyQualifiedName: string,
   outcome: TestOutcome,
 }
 
