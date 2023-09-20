@@ -4,30 +4,26 @@ import { pipe } from 'fp-ts/function'
 import { TestReport } from '../test-report'
 import { TreeNode } from './tree'
 
-const add = (report: Array<TreeNode>, t: TestReport, ancestorNames: TestReport['ancestorNames']): void => {
+const add = (forest: Array<TreeNode>, newLeaf: TreeNode, ancestorNames: TestReport['ancestorNames']): void => {
   if (ancestorNames.length === 0) {
-    report.push({
-      label: t.name,
-      outcome: t.outcome,
-      children: [],
-    })
+    forest.push(newLeaf)
     return
   }
   const ancestor = pipe(
-    report,
+    forest,
     RA.filter((node) => node.label === ancestorNames[0]),
     RA.head,
     O.getOrElseW(() => undefined),
   )
   if (ancestor !== undefined) {
-    add(ancestor.children, t, ancestorNames.slice(1))
-    switch (t.outcome) {
+    add(ancestor.children, newLeaf, ancestorNames.slice(1))
+    switch (newLeaf.outcome) {
       case 'fail':
-        ancestor.outcome = t.outcome
+        ancestor.outcome = newLeaf.outcome
         break
       case 'wip':
         if (ancestor.outcome === 'pass')
-          ancestor.outcome = t.outcome
+          ancestor.outcome = newLeaf.outcome
         break
       case 'pass':
         break
@@ -36,13 +32,18 @@ const add = (report: Array<TreeNode>, t: TestReport, ancestorNames: TestReport['
   }
   const r: TreeNode = {
     label: ancestorNames[0],
+    outcome: newLeaf.outcome,
+    children: [],
+  }
+  add(r.children, newLeaf, ancestorNames.slice(1))
+  forest.push(r)
+}
+
+export const addToReport = (forest: Array<TreeNode>) => (t: TestReport): void => {
+  const newLeaf: TreeNode = {
+    label: t.name,
     outcome: t.outcome,
     children: [],
   }
-  add(r.children, t, ancestorNames.slice(1))
-  report.push(r)
+  add(forest, newLeaf, t.ancestorNames)
 }
-
-export const addToReport = (report: Array<TreeNode>) => (t: TestReport): void => (
-  add(report, t, t.ancestorNames)
-)
