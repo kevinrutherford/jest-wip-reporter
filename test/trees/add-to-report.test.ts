@@ -1,16 +1,15 @@
 import { pipe } from 'fp-ts/lib/function'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
-import { TreeNode } from '../src/trees/tree'
-import { arbitraryString } from './helpers'
-import * as progressTree from '../src/progress/progress-tree'
-import { TestOutcome } from '../src/test-outcome'
-import { TestReport } from '../src/test-report'
+import { TestOutcome } from '../../src/test-outcome'
+import { TestReport } from '../../src/test-report'
+import { addToReport, TreeNode } from '../../src/trees'
+import { arbitraryString } from '../helpers'
 
 const constructTreeOfSuites = (report: ReadonlyArray<TestReport>): Array<TreeNode> => pipe(
   report,
   RA.reduce([], (fr: Array<TreeNode>, r: TestReport) => {
-    progressTree.addToReport(fr)(r)
+    addToReport(fr)(r)
     return fr
   }),
 )
