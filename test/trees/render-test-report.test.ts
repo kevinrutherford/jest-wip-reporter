@@ -1,12 +1,12 @@
 import { Config } from '../../src/config'
 import { renderTestReport } from '../../src/trees/render-tree'
-import { LeafNode } from '../../src/trees/tree'
+import { TreeNode } from '../../src/trees/tree'
 import { arbitraryString } from '../helpers'
 
 describe('progress-tree', () => {
   describe('rendering a pass test', () => {
     const label = arbitraryString()
-    const t: LeafNode = {
+    const t: TreeNode = {
       label,
       outcome: 'pass',
       children: [],

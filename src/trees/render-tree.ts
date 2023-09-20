@@ -1,6 +1,6 @@
 import { Config } from '../config'
 import { TestOutcome } from '../test-outcome'
-import { Report } from './tree'
+import { TreeNode } from './tree'
 
 const dots: Record<TestOutcome, string> = {
   pass: '✓',
@@ -8,14 +8,14 @@ const dots: Record<TestOutcome, string> = {
   fail: 'x',
 }
 
-export const renderTestReport = (config: Config, indentLevel: number) => (node: Report): void => {
+export const renderTestReport = (config: Config, indentLevel: number) => (node: TreeNode): void => {
   const dot = dots[node.outcome]
   const pen = config.pens[node.outcome]
   pen('  '.repeat(indentLevel))
   pen(`${dot} ${node.label}\n`)
 }
 
-const renderReport = (config: Config, indentLevel: number) => (r: Report): void => {
+const renderReport = (config: Config, indentLevel: number) => (r: TreeNode): void => {
   if (r.children.length === 0)
     renderTestReport(config, indentLevel)(r)
   else {
@@ -26,6 +26,6 @@ const renderReport = (config: Config, indentLevel: number) => (r: Report): void 
   }
 }
 
-export const renderSuite = (report: Array<Report>, config: Config): void => {
+export const renderSuite = (report: Array<TreeNode>, config: Config): void => {
   report.forEach(renderReport(config, 0))
 }

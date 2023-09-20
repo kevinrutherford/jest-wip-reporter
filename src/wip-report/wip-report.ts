@@ -2,7 +2,7 @@ import { Config } from '../config'
 import { addToReport } from '../progress/progress-tree'
 import { Reporters } from '../reporters'
 import { TestReport } from '../test-report'
-import { renderSuite, Report } from '../trees'
+import { renderSuite, TreeNode } from '../trees'
 
 const rememberWipTests = (wipTests: Array<TestReport>) => (r: TestReport): void => {
   if (r.outcome === 'wip')
@@ -21,7 +21,7 @@ const renderWipTitles = (wipTests: Array<TestReport>, config: Config): void => {
 
 const renderWipTree = (wipTests: Array<TestReport>, config: Config): void => {
   if (wipTests.length > 0) {
-    const fileReport: Array<Report> = []
+    const fileReport: Array<TreeNode> = []
     wipTests.forEach(addToReport(fileReport))
     const wipPen = config.pens.wip
     wipPen('\n\nWork in progress:\n\n')

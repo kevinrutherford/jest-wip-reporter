@@ -4,9 +4,9 @@ import { pipe } from 'fp-ts/function'
 import { Reporters } from '../reporters'
 import { Config } from '../config'
 import { TestReport } from '../test-report'
-import { renderSuite, Report } from '../trees'
+import { renderSuite, TreeNode } from '../trees'
 
-const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['ancestorNames']): void => {
+const add = (report: Array<TreeNode>, t: TestReport, ancestorNames: TestReport['ancestorNames']): void => {
   if (ancestorNames.length === 0) {
     report.push({
       label: t.name,
@@ -36,7 +36,7 @@ const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['an
     }
     return
   }
-  const r: Report = {
+  const r: TreeNode = {
     label: ancestorNames[0],
     outcome: t.outcome,
     children: [],
@@ -45,12 +45,12 @@ const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['an
   report.push(r)
 }
 
-export const addToReport = (report: Array<Report>) => (t: TestReport): void => (
+export const addToReport = (report: Array<TreeNode>) => (t: TestReport): void => (
   add(report, t, t.ancestorNames)
 )
 
 export const register = (host: Reporters, config: Config): void => {
-  const fileReport: Array<Report> = []
+  const fileReport: Array<TreeNode> = []
   host.onSuiteStart.push(() => { fileReport.length = 0 })
   host.onTestFinish.push(addToReport(fileReport))
   host.onSuiteFinish.push(() => renderSuite(fileReport, config))

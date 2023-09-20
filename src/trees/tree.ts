@@ -1,15 +1,7 @@
 import { TestOutcome } from '../test-outcome'
 
-export type LeafNode = {
+export type TreeNode = {
   label: string,
   outcome: TestOutcome,
-  children: Array<Report>,
+  children: Array<TreeNode>,
 }
-
-export type SuiteReport = {
-  label: string,
-  outcome: TestOutcome,
-  children: Array<Report>,
-}
-
-export type Report = LeafNode | SuiteReport
