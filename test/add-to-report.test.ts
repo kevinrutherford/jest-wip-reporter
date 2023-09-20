@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/lib/function'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
-import { isTestReport, Report } from '../src/trees/tree'
+import { Report } from '../src/trees/tree'
 import { arbitraryString } from './helpers'
 import * as progressTree from '../src/progress/progress-tree'
 import { TestOutcome } from '../src/test-outcome'
@@ -40,7 +40,7 @@ describe('addToReport', () => {
     it('adds the test as a child of the suite', () => {
       const firstChild = suiteNode.children[0]
 
-      expect(isTestReport(firstChild)).toBe(true)
+      expect(firstChild.label).toStrictEqual(name)
     })
   })
 
