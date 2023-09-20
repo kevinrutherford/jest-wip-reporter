@@ -1,8 +1,10 @@
 import { TestOutcome } from '../test-outcome'
-import { TestReport } from '../test-report'
 
-export type LeafNode = TestReport & {
+export type LeafNode = {
   _tag: 'test-report',
+  name: string,
+  fullyQualifiedName: string,
+  outcome: TestOutcome,
 }
 
 export type SuiteReport = {

@@ -10,7 +10,6 @@ describe('progress-tree', () => {
       _tag: 'test-report',
       name,
       fullyQualifiedName: arbitraryString(),
-      ancestorNames: [],
       outcome: 'pass',
     }
 

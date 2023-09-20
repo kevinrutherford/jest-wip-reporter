@@ -1,7 +1,6 @@
 import { Config } from '../config'
 import { TestOutcome } from '../test-outcome'
-import { TestReport } from '../test-report'
-import { isTestReport, Report } from './tree'
+import { isTestReport, LeafNode, Report } from './tree'
 
 const dots: Record<TestOutcome, string> = {
   pass: '✓',
@@ -9,11 +8,11 @@ const dots: Record<TestOutcome, string> = {
   fail: 'x',
 }
 
-export const renderTestReport = (config: Config, indentLevel: number) => (outcome: TestReport): void => {
-  const dot = dots[outcome.outcome]
-  const pen = config.pens[outcome.outcome]
+export const renderTestReport = (config: Config, indentLevel: number) => (node: LeafNode): void => {
+  const dot = dots[node.outcome]
+  const pen = config.pens[node.outcome]
   pen('  '.repeat(indentLevel))
-  pen(`${dot} ${outcome.name}\n`)
+  pen(`${dot} ${node.name}\n`)
 }
 
 const renderReport = (config: Config, indentLevel: number) => (r: Report): void => {
