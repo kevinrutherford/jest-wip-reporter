@@ -14,6 +14,7 @@ const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['an
       _tag: 'test-report',
       label: t.name,
       outcome: t.outcome,
+      children: [],
     })
     return
   }

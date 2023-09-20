@@ -10,6 +10,7 @@ describe('progress-tree', () => {
       _tag: 'test-report',
       label,
       outcome: 'pass',
+      children: [],
     }
 
     it('includes the name of the test', () => {
