@@ -1,9 +1,7 @@
 import { pipe } from 'fp-ts/lib/function'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
-import {
-  isSuiteReport, isTestReport, Report, SuiteReport,
-} from '../src/trees/tree'
+import { isTestReport, Report } from '../src/trees/tree'
 import { arbitraryString } from './helpers'
 import * as progressTree from '../src/progress/progress-tree'
 import { TestOutcome } from '../src/test-outcome'
@@ -33,8 +31,6 @@ describe('addToReport', () => {
       constructTreeOfSuites,
       RA.head,
       O.getOrElseW(() => { throw new Error('Expected at least one node in the tree') }),
-      O.fromPredicate(isSuiteReport),
-      O.getOrElseW(() => { throw new Error('Expected the root node to be a suite') }),
     )
 
     it('adds a suite whose name is that of the ancestor', () => {
@@ -83,8 +79,6 @@ describe('addToReport', () => {
         constructTreeOfSuites,
         RA.head,
         O.getOrElseW(() => { throw new Error('Expected at least one node in the tree') }),
-        O.fromPredicate(isSuiteReport),
-        O.getOrElseW(() => { throw new Error('Expected the root node to be a suite') }),
       )
 
       it('adds both tests as children of the same suite node', () => {
@@ -98,7 +92,7 @@ describe('addToReport', () => {
   })
 
   describe('given a single test with a grandparent', () => {
-    let parent: SuiteReport
+    let parent: Report
 
     beforeEach(() => {
       const grandparentName = arbitraryString()
@@ -116,13 +110,9 @@ describe('addToReport', () => {
         constructTreeOfSuites,
         RA.head,
         O.getOrElseW(() => { throw new Error('Expected at least one node in the tree') }),
-        O.fromPredicate(isSuiteReport),
-        O.getOrElseW(() => { throw new Error('Expected the root node to be a suite') }),
         (grandparent) => grandparent.children,
         RA.head,
         O.getOrElseW(() => { throw new Error('Expected at least one intermediate parent') }),
-        O.fromPredicate(isSuiteReport),
-        O.getOrElseW(() => { throw new Error('Expected the parent node to be a suite') }),
       )
     })
 

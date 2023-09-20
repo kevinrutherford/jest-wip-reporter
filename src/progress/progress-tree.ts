@@ -4,9 +4,7 @@ import { pipe } from 'fp-ts/function'
 import { Reporters } from '../reporters'
 import { Config } from '../config'
 import { TestReport } from '../test-report'
-import {
-  isSuiteReport, renderSuite, Report, SuiteReport,
-} from '../trees'
+import { renderSuite, Report, SuiteReport } from '../trees'
 
 const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['ancestorNames']): void => {
   if (ancestorNames.length === 0) {
@@ -22,7 +20,6 @@ const add = (report: Array<Report>, t: TestReport, ancestorNames: TestReport['an
     report,
     RA.filter((node) => node.label === ancestorNames[0]),
     RA.head,
-    O.filter(isSuiteReport),
     O.getOrElseW(() => undefined),
   )
   if (ancestor !== undefined) {
