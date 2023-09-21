@@ -25,7 +25,7 @@ is not yet finished.
 
 ## Output
 
-![image](https://github.com/kevinrutherford/jest-wip-reporter/assets/23290/5bf37aa3-186e-4015-9dae-a82da62e08cd)
+![image](https://github.com/kevinrutherford/jest-wip-reporter/assets/23290/969d664c-4660-4e4b-b65e-7e4d582ecf2f)
 
 The report generated comprises four parts:
 
