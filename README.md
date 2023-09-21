@@ -13,9 +13,10 @@ WIP tests represent work that is still to be finished; they won't
 fail your build, but the reporter will call them out and remind you loudly
 that your work isn't done yet.
 
-In Jest terms,
-a WIP test is deemed to be any test that is marked as `.todo`, `.failing` or `.skip`,
-or any test that is skipped due to some `describe` or `it` being marked with `.only`.
+In Jest terms, this reporter marks a test as WIP if it:
+* is marked as `.todo`, `.failing` or `.skip`, or
+* is skipped due to some `describe` or `it` being marked with `.only`, or
+* contains no assertions.
 
 Note that a `.failing` test that Jest would report as "passing"
 (because the test run failed)
@@ -28,25 +29,24 @@ is not yet finished.
 
 The report generated comprises four parts:
 
-1. A progress report.
+1. A progress report.  
    By default the reporter emits a single character when each test runs:
    - Passing: a green '.'
    - WIP: an amber '?'
    - Failing: a red 'x'
+
    This can be changed to emit a tree of nested describe and test titles
    by setting the environment variable `$JWR_PROGRESS` to `tree`
    (the default value is `dots`).
 
-2. A summary of WIP tests.
+2. A summary of WIP tests.  
+   By default this is output as a tree of nested describe and test titles.
+   To replace this with a flat list of fully-qualified test names set the
+   environment variable `$JWR_WIP_REPORT` to `list` (the default value is `tree`).
 
 3. Details of any failures.
 
 4. A summary of the test run.
-
-### Configuration
-
-By default this reporter emits a single character for each executed test.
-To see test titles instead, set the environment variable `$JWR_PROGRESS` to `tree`.
 
 ## Installation
 
