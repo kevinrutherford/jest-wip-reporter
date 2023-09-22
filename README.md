@@ -29,24 +29,43 @@ is not yet finished.
 
 The report generated comprises four parts:
 
-1. A progress report.  
-   By default the reporter emits a single character when each test runs:
+1. A progress report in which the outcome of each test is represented by a single character:
    - Passing: a green '.'
    - WIP: an amber '?'
    - Failing: a red 'x'
 
-   This can be changed to emit a tree of nested describe and test titles
-   by setting the environment variable `$JWR_PROGRESS` to `tree`
-   (the default value is `dots`).
-
-2. A summary of WIP tests.  
-   By default this is output as a tree of nested describe and test titles.
-   To replace this with a flat list of fully-qualified test names set the
-   environment variable `$JWR_WIP_REPORT` to `list` (the default value is `tree`).
+2. A summary of WIP tests.
 
 3. Details of any failures.
 
 4. A summary of the test run.
+
+### Configuring the progress report
+
+By default the reporter emits a single character when each test runs:
+- Passing: a green '.'
+- WIP: an amber '?'
+- Failing: a red 'x'
+
+In this default view, the output contains a single character for each test,
+but `describe` blocks and test names are not represented.
+
+If you need to see more context, the progress report can be configured
+to emit a tree of nested describe and test names
+by setting the environment variable `$JWR_PROGRESS` to `tree`
+(the default value is `dots`).
+
+In the `tree` report, each describe is coloured to match the "worst" outcome
+of the tests it contains.
+For example, a describe block containing a WIP test and a failing test
+would be rendered as failing, because a failing test is "worse" than a WIP test.
+
+### Configuring the WIP report
+
+If you have any WIP tests,
+by default this reporter will list them as a tree of nested describe and test titles.
+To replace this with a flat list of fully-qualified test names set the
+environment variable `$JWR_WIP_REPORT` to `list` (the default value is `tree`).
 
 ## Installation
 

@@ -4,7 +4,7 @@
 
 ### Changed
 
-* Default WIP report is now tree-shaped
+* The WIP report is now tree-shaped by default
 * Set $JWR_WIP_REPORT=list to display the WIP report in the old format (full titles)
 * When $JWR_PROGRESS=tree, test suites are coloured to match the "worst" outcome they contain
 
