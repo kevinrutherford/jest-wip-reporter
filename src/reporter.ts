@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 import type { AggregatedResult, Reporter, TestResult } from '@jest/reporters'
-import * as summaryReport from './summary-report'
+import * as summaryReport from './summary'
 import { toTestReport } from './to-test-report'
 import * as progress from './progress'
 import { Reporters } from './reporters'
