@@ -7,15 +7,15 @@ An opinionated Jest reporter that treats all incomplete tests as WIP.
 
 ## Philosophy
 
-This reporter considers every test to be in one of exactly three states:
-passing, failing, or WIP (work in progress).
+This reporter considers every test to be in one of three states:
+**passing**, **failing**, or **WIP** (work in progress).
 WIP tests represent work that is still to be finished; they won't
 fail your build, but the reporter will call them out and remind you loudly
 that your work isn't done yet.
 
 In Jest terms, this reporter marks a test as WIP if it:
 * is marked as `.todo`, `.failing` or `.skip`, or
-* is skipped due to some `describe` or `it` being marked with `.only`, or
+* is skipped due to some other `describe` or `it` being marked with `.only`, or
 * contains no assertions.
 
 Note that a `.failing` test that Jest would report as "passing"
