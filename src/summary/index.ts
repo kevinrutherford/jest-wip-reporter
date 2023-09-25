@@ -1,1 +1,1 @@
-export { register } from './summary-report'
+export { register } from './register'
