@@ -3,7 +3,7 @@ import { render } from '../../src/summary/render'
 
 describe('render', () => {
   describe('when there were no tests', () => {
-    it.failing('reports that 0 tests were run', () => {
+    it('reports that 0 tests were run', () => {
       let output = ''
       const write = (s: string) => { output += s }
       const config: Config = {
