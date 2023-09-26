@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.1 (tbc)
+
+### Changed
+
+* Displays "0 run" when there are no tests
+
 ## 2.0.0 (2023-09-22)
 
 ### Changed
