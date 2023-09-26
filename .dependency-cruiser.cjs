@@ -138,13 +138,12 @@ module.exports = {
     }
   ],
   options: {
-    doNotFollow: {
-    },
+    doNotFollow: { path: 'node_modules' },
     exclude : {
       path: '^.*-spec.ts$|helper',
       dynamic: true
     },
-    includeOnly : '^src/|^node_modules/',
+    includeOnly : '^src/',
     tsPreCompilationDeps: true,
     tsConfig: { fileName: 'tsconfig.json' },
     enhancedResolveOptions: {
@@ -154,7 +153,7 @@ module.exports = {
     },
     reporterOptions: {
       dot: {
-        collapsePattern: '^node_modules/',
+        collapsePattern: 'node_modules/(@[^/]+/[^/]+|[^/]+)',
          theme: {
            graph: {
              rankdir: 'LR',
