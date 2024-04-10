@@ -26,7 +26,7 @@ $(MK_COMPILED): node_modules $(TS_SOURCES)
 	@touch $@
 
 node_modules: package.json package-lock.json
-	npm ci
+	npm install
 
 $(MK_LINTED): node_modules $(TS_SOURCES)
 	npx eslint src test \
