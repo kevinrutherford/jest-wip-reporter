@@ -1,11 +1,11 @@
-name: Dependabot checks
+name: Dependabot automerge
 on: pull_request
 
 permissions: write-all
 
 jobs:
   dependabot:
-    name: dependabot checks
+    name: dependabot
     runs-on: ubuntu-latest
     if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
@@ -13,7 +13,20 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v3
 
-      - name: Compile
+      - name: Test
         run: |
           make clobber ci-checks
+
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v1
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Auto-merge minor and patch updates
+        if: (steps.metadata.outputs.update-type == 'version-update:semver-minor') || (steps.metadata.outputs.update-type == 'version-update:semver-patch')
+        run: gh pr merge --squash "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
