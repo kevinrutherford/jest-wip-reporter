@@ -72,13 +72,13 @@ environment variable `$JWR_WIP_REPORT` to `list` (the default value is `tree`).
 Install as a development dependency:
 
 ```bash
-npm install --save-dev jest-simple-dot-reporter
+npm install --save-dev jest-wip-reporter
 ```
 
 or
 
 ```bash
-yarn add --dev jest-simple-dot-reporter
+yarn add --dev jest-wip-reporter
 ```
 
 Then [configure Jest](https://facebook.github.io/jest/docs/en/configuration.html)
