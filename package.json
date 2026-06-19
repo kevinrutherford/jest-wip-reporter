@@ -7,6 +7,9 @@
   ],
   "main": "dist",
   "types": "dist/index.d.ts",
+  "scripts": {
+    "test:package": "node scripts/verify-package-entrypoints.mjs"
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/kevinrutherford/jest-wip-reporter.git"
