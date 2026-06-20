@@ -9,7 +9,7 @@
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/kevinrutherford/jest-wip-reporter.git"
+    "url": "git+https://github.com/kevinrutherford/jest-wip-reporter.git"
   },
   "keywords": [
     "Jest",
